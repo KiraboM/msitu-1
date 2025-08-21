@@ -16,7 +16,8 @@ import NewProject from '../../components/projects/NewProject';
 import { setShowCreateNewProjects } from '../../store/modal';
 import FabGroup from '../../components/fab/FabGroup';
 import { loadSettings } from '../../store/settings';
-import {treeEstimate} from "../../utils";
+import {treeEstimate, convertToMeters} from "../../utils";
+import MetricsConfigModal from '../../components/misc/MetricsConfigModal';
 
 
 const Home = ({ navigation }) => {
@@ -24,6 +25,11 @@ const Home = ({ navigation }) => {
   const [areaMode, setAreaMode] = useState(false);
   const [planting, setPlanting] = useState(false);
   const [area, setArea] = useState(0.00);
+  const [treeCount, setTreeCount] = useState(0);
+  const [showPlantingConfig, setShowPlantingConfig] = useState(false);
+  const [meshType, setMeshType] = useState('S');
+  const [gapUnit, setGapUnit] = useState('meter');
+  const [gapSize, setGapSize] = useState(3.6);
   const [polygonCoordinates, setPolygonCoordinates] = useState([]);
   const [initialRegion, setInitialRegion] = useState({
     latitude: 0.04694938133710109,
@@ -154,6 +160,15 @@ const Home = ({ navigation }) => {
     }
   }, [areaMode, polygonCoordinates]);
 
+  useEffect(() => {
+    if (areaMode) {
+      setShowPlantingConfig(true);
+    } else {
+      setArea(0.00);
+      setTreeCount(0);
+    }
+  }, [areaMode]);
+
 
   const handleIconClick = (action) => {
     if(action === 'center'){
@@ -253,9 +268,9 @@ const Home = ({ navigation }) => {
         onPolygonCoordsChange={(coords)=>{
           const a = RTNMsitu.calculateArea(coords,1.0);
           setArea(a);
-          const treeCountSquare = treeEstimate(a, 'S', 3.6);
-          const treeCountTriangle = treeEstimate(a, 'T', 3.6);
-          console.log(treeCountSquare, treeCountTriangle);
+          const gapMeters = gapUnit === 'feet' ? convertToMeters(gapSize, 'feet') : gapSize;
+          const estimated = treeEstimate(a, meshType, gapMeters);
+          setTreeCount(estimated);
         }}
         visibleLines={visibleLines}
         rotationDegrees={mapRotateDegrees}
@@ -280,7 +295,7 @@ const Home = ({ navigation }) => {
               </View>
               <View className="flex flex-row justify-start gap-1 align-baseline">
                 <Text className="font-avenirBold">Trees:</Text>
-                <Text className="font-avenirMedium">500</Text>
+                <Text className="font-avenirMedium">{treeCount}</Text>
               </View>
             </View>}
         </View>
@@ -304,6 +319,30 @@ const Home = ({ navigation }) => {
         roverLocation={roverLocation}
         onClose={() => dispatch(setShowCreateNewProjects(false))}
         show={modalStore.showCreateNewProjects} />
+      <MetricsConfigModal
+        visible={showPlantingConfig}
+        onClose={(result) => {
+          setShowPlantingConfig(false);
+          const isValid = result && result.wasApplied === true;
+          if (!isValid) {
+            setAreaMode(false);
+          }
+        }}
+        onApply={({ meshType: mt, gapUnit: gu, gapSize: gs }) => {
+          setMeshType(mt);
+          setGapUnit(gu);
+          setGapSize(gs);
+          // If we already have an area, re-evaluate tree count instantly
+          if (area && area > 0) {
+            const gapMeters = gu === 'feet' ? convertToMeters(gs, 'feet') : gs;
+            const estimated = treeEstimate(area, mt, gapMeters);
+            setTreeCount(estimated);
+          }
+        }}
+        initialMeshType={meshType}
+        initialGapUnit={gapUnit}
+        initialGapSize={gapSize}
+      />
       <FabGroup
         actions={[
           {

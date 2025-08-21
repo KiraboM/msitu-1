@@ -6,6 +6,6 @@
   "publishedAt": "2025-08-21T15:30:00Z",
   "changelog": [
     "Center to project base when a project is loaded",
-    "Calculate area of a piece of land and possible no. of trees"
+    "Calculate area of a piece of land and possible no. of trees given mesh and gap size"
   ]
 }
