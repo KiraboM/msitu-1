@@ -54,10 +54,10 @@ export default function TopNavBar({ navigation, hideNewProject }) {
     });
 
     const bluetoothStatusStyle = useAnimatedStyle(() => {
-        const backgroundColor = isBluetoothEnabled 
+        const backgroundColor = isBluetoothEnabled
             ? selectedDevice ? 'rgba(255, 255, 255, 0.1)' : 'rgba(59, 130, 246, 0.15)'
             : 'rgba(239, 68, 68, 0.15)';
-        
+
         return {
             backgroundColor: withTiming(backgroundColor, { duration: 300 }),
         };
@@ -86,7 +86,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
     };
 
     return (
-        <Reanimated.View 
+        <Reanimated.View
             className="absolute flex flex-row justify-between top-10 left-2 right-2 p-3 rounded-2xl items-center z-10"
             style={[animatedStyle, containerStyle]}
         >
@@ -101,13 +101,13 @@ export default function TopNavBar({ navigation, hideNewProject }) {
             >
                 <Icon name="menu-outline" size={24} color={highContrastMode ? "#000000" : "#3b82f6"} />
             </TouchableOpacity>
-            
+
             <View className="flex-1 mx-4">
                 <Text className='font-avenirBold text-xl text-center' style={textStyle}>
-                    {activeProject ? activeProject.name : `${APP_NAME} [Cyrus Mode]`}
+                    {activeProject ? activeProject.name : `${APP_NAME}`}
                 </Text>
             </View>
-            
+
             <View className='flex flex-row items-center gap-2'>
                 <TouchableOpacity
                     onPress={() => dispatch(setShowBTDevices(true))}

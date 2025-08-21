@@ -21,16 +21,20 @@ package com.rtnmsitu.utils;
 
 import android.location.Location;
 import android.location.LocationManager;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.rtnmsitu.geometry.LongLat;
 
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import dilivia.s2.S2LatLng;
 import dilivia.s2.index.point.S2PointIndex;
+import gov.nasa.worldwind.geom.LatLon;
+import gov.nasa.worldwind.geom.coords.UTMCoord;
+import kotlin.Pair;
 
 public class GeneralHelper {
 
@@ -59,22 +63,34 @@ public class GeneralHelper {
 
     }
 
-    public static float sanitizeMagnetometerBearing(Float bearing){
-        if (bearing < 0) {
-            return -1 * bearing + 5 ;
+    public static Pair<List<Double>, List<Double>> coordsToEastingsNorthings(List<LatLng> coordinates){
+        List<Double> eastings = new ArrayList<>();
+        List<Double> northings = new ArrayList<>();
+
+        for (LatLng coord: coordinates) {
+            LatLon ll = LatLon.fromDegrees(coord.latitude, coord.longitude);
+            UTMCoord utm =  UTMCoord.fromLatLon(ll.latitude, ll.longitude);
+            eastings.add(utm.getEasting());
+            northings.add(utm.getNorthing());
         }
-        return 360f - bearing - 5;
+        return new Pair<>(eastings, northings);
     }
 
-    public static void changeMapPosition(GoogleMap map, Float angle)  {
-        CameraPosition position = map.getCameraPosition();
-        CameraPosition cameraPosition = CameraPosition.builder()
-                .target(position.target)
-                .zoom(position.zoom)
-                .tilt(position.tilt)
-                .bearing(angle+5) // tilt if further more by 5
-                .build();
-        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+    public static double convert(double area, String units) {
+        // 1 for acres and 2 for hectares
+        double finalArea = 0.0;
+
+        DecimalFormat df = new DecimalFormat("#.####");
+        df.setRoundingMode(RoundingMode.DOWN);
+
+        // finalArea = area / 10000;
+        finalArea = switch (units) {
+            case "1.0" -> Double.parseDouble(df.format(area / 4047));
+            // finalArea = area / 4047;
+            case "2.0" -> Double.parseDouble(df.format(area / 10000));
+            default -> finalArea;
+        };
+        return finalArea;
     }
 
 }

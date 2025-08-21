@@ -6,16 +6,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import AnimatedLoader from 'react-native-animated-loader';
 import { throttle } from 'lodash';
 import { initializeBT } from '../../store/bluetooth';
-import MsituMapView from '../../components/maps/MsituMapView';
+import MsituMapView from '../../components/maps/MsituMapView.tsx';
 import LocationFeed from '../../components/maps/LocationFeed';
 import TopNavBar from '../../components/misc/TopNavBar';
 import styles from '../../assets/styles';
 import LatLong from '../../services/NMEAService';
-import { FixType } from 'rtn-msitu';
+import {FixType, RTNMsitu} from 'rtn-msitu';
 import NewProject from '../../components/projects/NewProject';
 import { setShowCreateNewProjects } from '../../store/modal';
 import FabGroup from '../../components/fab/FabGroup';
 import { loadSettings } from '../../store/settings';
+import {treeEstimate} from "../../utils";
 
 
 const Home = ({ navigation }) => {
@@ -36,7 +37,7 @@ const Home = ({ navigation }) => {
   const [mapRotateDegrees, setMapRotateDegrees] =  useState(180);
   const [mapType, setMapType] = useState('SATELLITE');
 
-  const { activeProject, visibleLines, loading, scaledPlantingLines, lock, forwardIndex, backwardIndex, totalLines } = useSelector(store => store.project);
+  const { activeProject, visibleLines, loading, scaledPlantingLines, lock } = useSelector(store => store.project);
   const { selectedDevice } = useSelector(store => store.bluetooth);
   const [activeMinusLines, setActiveMinusLines] =  useState(false);
   const [activePlusLines, setActivePlusLines] =  useState(true);
@@ -249,6 +250,13 @@ const Home = ({ navigation }) => {
         initialRegion={initialRegion}
         areaMode={areaMode}
         roverLocation={roverLocation}
+        onPolygonCoordsChange={(coords)=>{
+          const a = RTNMsitu.calculateArea(coords,1.0);
+          setArea(a);
+          const treeCountSquare = treeEstimate(a, 'S', 3.6);
+          const treeCountTriangle = treeEstimate(a, 'T', 3.6);
+          console.log(treeCountSquare, treeCountTriangle);
+        }}
         visibleLines={visibleLines}
         rotationDegrees={mapRotateDegrees}
         mapType={mapType}
@@ -265,10 +273,10 @@ const Home = ({ navigation }) => {
 
         <View className="flex flex-row justify-start">
           {areaMode &&
-            <View className="bg-white/70 rounded mx-1 w-32 px-1">
+            <View className="bg-white/70 rounded mx-1 w-auto px-1">
               <View className="flex flex-row justify-start gap-1 align-baseline">
                 <Text className="font-avenirBold">Area:</Text>
-                <Text className="font-avenirMedium">{area} sq m</Text>
+                <Text className="font-avenirMedium">{area} acres</Text>
               </View>
               <View className="flex flex-row justify-start gap-1 align-baseline">
                 <Text className="font-avenirBold">Trees:</Text>

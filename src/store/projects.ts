@@ -56,7 +56,7 @@ export const loadProject = createAsyncThunk(
     'project/loadProject',
     async (id: number, thunkAPI) => {
         try {
-            const project = await ProjectService.getById("projects", id);
+            const project = await ProjectService.getById('projects', id);
             thunkAPI.dispatch(setShowProjectList(false))
             let jsProject ={
                     ...project,
@@ -245,7 +245,6 @@ export const projectSlice = createSlice({
                 state.lock = false;
                 // @ts-ignore
                 const {project, settings} = action.payload;
-                console.log(settings)
                 state.scaledPlantingLines = project.plantingLines.slice(0, settings.displayLineCount)
                 state.activeProject = project;
             })

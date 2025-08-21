@@ -1,11 +1,11 @@
 {
-  "currentVersion": "1.1.2",
-  "previousVersion": "1.1.1",
+  "currentVersion": "1.1.3",
+  "previousVersion": "1.1.2",
   "size": "~61MB",
-  "downloadUrl": "https://github.com/ekeeya/files/raw/main/msitu-apk-1.1.2.apk",
-  "publishedAt": "2025-08-03T20:30:00Z",
+  "downloadUrl": "https://github.com/ekeeya/files/raw/main/msitu-apk-1.1.3.apk",
+  "publishedAt": "2025-08-21T15:30:00Z",
   "changelog": [
-    "Added some performance improvements",
-    "Added ability to do in-app updates"
+    "Center to project base when a project is loaded",
+    "Calculate area of a piece of land and possible no. of trees"
   ]
 }

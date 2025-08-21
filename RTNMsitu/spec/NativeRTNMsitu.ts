@@ -1,5 +1,5 @@
 import { TurboModule, TurboModuleRegistry } from 'react-native';
-import { type PlantingLine, type LongLat } from './types/backend';
+import { type LongLat } from './types/backend';
 import { LatLng } from 'react-native-maps';
 
 export interface Spec extends TurboModule {
@@ -11,6 +11,11 @@ export interface Spec extends TurboModule {
         points:Array<{x:number, y:number, zone:number, hemisphere:string}>,
         center:{x:number, y:number, zone:number, hemisphere:string}):
         Promise<Array<LongLat>>;
+
+    calculateArea(
+        coordinates:Array< { latitude: number; longitude: number }>,
+        units:number
+    ):number
 
     linesToCoords(
         lines:Array<Array<{x:number, y:number, zone:number, hemisphere:string}>>,

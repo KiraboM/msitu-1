@@ -32,6 +32,21 @@ object Utils {
         return LongLat(longitude, latitude)
     }
 
+    fun extractLatLng(o: ReadableMap): LatLng {
+        val latitude = o.getDouble("latitude")
+        val longitude = o.getDouble("longitude")
+        return LatLng(longitude, latitude)
+    }
+
+    fun extractListOfLatLng(list:ReadableArray): MutableList<LatLng>{
+        val coordinates = arrayListOf<LatLng>()
+        for (i in 0 until list.size()){
+            val coord: ReadableMap = list.getMap(i)
+            val latLong:LatLng = extractLatLng(coord);
+            coordinates.add(latLong);
+        }
+        return coordinates;
+    }
     fun toDateString(d: Any, pattern:String): String? {
         val dateFormat = SimpleDateFormat(pattern, Locale.getDefault()).apply {
             timeZone = TimeZone.getTimeZone("UTC")

@@ -9,6 +9,8 @@ import com.facebook.react.bridge.WritableMap
 import com.facebook.react.module.annotations.ReactModule
 import com.google.android.gms.maps.model.LatLng
 import com.rtnmsitu.NativeRTNMsituSpec
+import com.rtnmsitu.geometry.GFG
+import com.rtnmsitu.geometry.GFG.polygonArea
 import com.rtnmsitu.geometry.Geometry
 import com.rtnmsitu.geometry.MeshDirection
 import com.rtnmsitu.geometry.Point
@@ -53,6 +55,26 @@ class MsituModule(reactContext: ReactApplicationContext) : NativeRTNMsituSpec(re
         } catch (e: Exception) {
             Log.e("RTMsitu", "An error occurred: ${e.message}", e)
             promise.reject("Error", e.message)
+        }
+    }
+
+    @ReactMethod(isBlockingSynchronousMethod = true)
+    override fun calculateArea(coordinates: ReadableArray?, units: Double): Double {
+        //
+        try {
+            var size = 0
+            val listOfLatLong = coordinates?.let { Utils.extractListOfLatLng(it) }
+            if (listOfLatLong != null) {
+                size =  listOfLatLong.size
+            }
+            val eastingsNothings = GeneralHelper.coordsToEastingsNorthings(listOfLatLong)
+            val area = polygonArea(
+                eastingsNothings.first, eastingsNothings.second, size)
+            val converted =  GeneralHelper.convert(area, units.toString())
+
+            return converted;
+        }catch (e: Exception) {
+            return 0.0
         }
     }
 

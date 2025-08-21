@@ -13,9 +13,9 @@ export function parseToUTC(input, format) {
 
 
 export function convertToUTC(input) {
-  
+
   const parsedTime = moment(input, "HHmmss");
-  const today = moment().startOf('day'); 
+  const today = moment().startOf('day');
 
   const finalDate = today.set({
     hour: parsedTime.hours(),
@@ -47,7 +47,7 @@ export const generateError = error => {
     let meters;
 
     switch (unit.toLowerCase()) {
-      
+
       case 'meter':
         meters = value * 1;
         break;
@@ -55,10 +55,10 @@ export const generateError = error => {
             meters = value * 0.3048;
             break;
         case 'inches':
-            meters = value * 0.0254; 
+            meters = value * 0.0254;
             break;
         case 'miles':
-            meters = value * 1609.34; 
+            meters = value * 1609.34;
             break;
         case 'acres':
             meters = value * 4046.86;
@@ -115,3 +115,31 @@ export const getHighContrastStyles = (highContrastMode) => {
         }
     };
 };
+
+
+export const    treeEstimate= (area, meshType, gap)=> {
+    if (gap <= 0) {
+        return 0;
+    }
+    if (area < 0) {
+        return 0;
+    }
+    const ACRES_TO_M2 = 4047; // Approximate conversion factor to match the original code
+
+    const areaM2 = area * ACRES_TO_M2;
+
+    let areaPerTree;
+    switch (meshType.toLowerCase()) {
+        case 's':
+            areaPerTree = gap * gap;
+            break;
+        case 't':
+            areaPerTree = (Math.sqrt(3) / 2) * gap * gap;
+            break;
+        default:
+            return 0;
+    }
+
+    const estimatedTrees = areaM2 / areaPerTree;
+    return Math.round(estimatedTrees);
+}

@@ -29,8 +29,7 @@ object GFG {
     fun polygonArea(
         X: MutableList<Double>,
         Y: MutableList<Double>,
-        n: Int,
-        context: Context // Added Context parameter for Toast
+        n: Int
     ): Double {
         // Initialize area
         var area = 0.0
@@ -38,7 +37,7 @@ object GFG {
         try {
             if (n < 3) {
                 // Show toast if less than 3 points
-                Toast.makeText(context, "Polygon needs at least 3 points", Toast.LENGTH_SHORT).show()
+                Log.e("Error", "An error occurred: Polygon needs at least 3 points")
                 return 0.0
             }
 
