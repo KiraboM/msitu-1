@@ -11,9 +11,9 @@ import com.facebook.react.defaults.DefaultReactHost.getDefaultReactHost
 import com.facebook.react.defaults.DefaultReactNativeHost
 import com.facebook.react.soloader.OpenSourceMergedSoMapping
 import com.facebook.soloader.SoLoader
-import com.swmansion.gesturehandler.BuildConfig
 import android.database.CursorWindow;
 import java.lang.reflect.Field;
+import com.msitu.BuildConfig
 
 class MainApplication : Application(), ReactApplication {
 

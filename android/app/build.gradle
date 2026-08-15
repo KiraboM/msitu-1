@@ -109,6 +109,7 @@ android {
         debug {
             signingConfig signingConfigs.debug
             buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
+            buildConfigField "boolean", "IS_HERMES_ENABLED", hermesEnabled.toBoolean().toString()
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
@@ -118,6 +119,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), "proguard-rules.pro"
             signingConfig signingConfigs.release
             buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", "true"
+            buildConfigField "boolean", "IS_HERMES_ENABLED", hermesEnabled.toBoolean().toString()
         }
     }
 }
