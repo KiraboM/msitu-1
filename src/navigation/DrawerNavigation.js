@@ -2,6 +2,7 @@ import {
   createDrawerNavigator,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
+import { useNavigation } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -9,11 +10,12 @@ import AppStack from './AppStack';
 import React, { useState, useEffect } from 'react';
 import { Dimensions, View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport } from '../store/modal';
+import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport, setShowSettingsScreen} from '../store/modal';
 import ProjectList from '../components/projects/ProjectList';
 import BluetoothDevices from '../components/projects/BluetoothDevices';
 import AboutMsituModal from '../components/misc/AboutMsituModal';
 import ProjectExportModal from '../components/projects/ProjectExportModal';
+import SettingsScreen from '../screens/settings/SettingsScreen';
 import { APP_VERSION, APP_NAME, APP_SUBTITLE, getBuildInfo } from '../config/version';
 import { DRAWER_MENUS } from './menus';
 import Reanimated, {
@@ -23,6 +25,7 @@ import Reanimated, {
   withTiming,
   withDelay
 } from 'react-native-reanimated';
+import { Screen } from 'react-native-screens';
 
 const Drawer = createDrawerNavigator();
 
@@ -356,7 +359,10 @@ function CustomDrawerContent({ navigation, isPortrait }) {
                   item.icon,
                   item.comingSoon ? "#9ca3af" : "#3b82f6"
                 )}
-                onPress={() => handleMenuItemAction(item, navigation, dispatch)}
+                onPress={() => {
+                  navigation.closeDrawer();
+                  navigation.navigate("Drawer" ,{screen: "Settings"})
+                }}
                 delay={900 + (index * 100)}
                 highContrastMode={highContrastMode}
                 disabled={item.comingSoon}
@@ -370,6 +376,7 @@ function CustomDrawerContent({ navigation, isPortrait }) {
 }
 
 export default function DrawerNavigation(props) {
+  const navigator = useNavigation()
   const { drawerWidth, isPortrait } = useDrawerWidth();
   const modalStore = useSelector(selector => selector.modals);
   const dispatch = useDispatch()

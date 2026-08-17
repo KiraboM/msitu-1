@@ -29,6 +29,14 @@ import { Settings, defaultSettings, loadSettings, saveSettings, toggleHighContra
 import Toast from 'react-native-toast-message';
 import UpdateAppModal from '../../components/misc/UpdateAppModal';
 import { useAppUpdate } from '../../hooks/useAppUpdate';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../../navigation/RootStackParamList';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import Home from '../main/Home';
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+type SettingsScreenNavigationProp = NativeStackNavigationProp<RootStackParamList, 'Settings'>;
 
 const AnimatedSettingCard = ({ children, index = 0, highContrast = false }: { children: React.ReactNode; index?: number; highContrast?: boolean }) => {
     const scaleValue = useSharedValue(0);
@@ -66,7 +74,7 @@ const AnimatedSettingCard = ({ children, index = 0, highContrast = false }: { ch
 };
 
 const SettingsScreen: React.FC = () => {
-    const navigation = useNavigation();
+    const navigation = useNavigation<SettingsScreenNavigationProp>();
     const [mode, setMode] = useState<boolean>(true);
     const [isPortrait, setIsPortrait] = useState<boolean>(true);
     const [mapStyle, setMapStyle] = useState<string>("satellite")
@@ -257,11 +265,11 @@ const SettingsScreen: React.FC = () => {
                 <View className={`flex flex-col p-4 gap-3`} style={{ marginTop: isPortrait ? 40 : 32 }}>
                     <View className="flex flex-row items-center justify-between">
                         <TouchableOpacity
-                            onPress={() => navigation.goBack()}
+                            onPress={() => navigation.navigate("Home")}
                             className="rounded-full w-14 h-14 items-center justify-center"
-                            style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}
+                            //style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}
                         >
-                            <Icon color={highContrastMode ? "#000000" : "#3b82f6"} name='keyboard-arrow-left' size={28} />
+                            <Icon color={highContrastMode ? "#000000" : "#484444"} name='keyboard-arrow-left' size={32} />
                         </TouchableOpacity>
                         <View className="items-center">
                             <Text className='font-avenirBold text-2xl' style={titleStyle}>Settings</Text>
