@@ -127,8 +127,8 @@ const AnimatedDrawerItem = ({ label, icon, onPress, delay = 0, description = nul
           )}
         </View>
         {badge && (
-          <View className="px-2 py-1 rounded-full" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(239, 68, 68, 0.1)' }}>
-            <Text className="font-avenirBold text-xs" style={{ color: highContrastMode ? '#000000' : '#ef4444' }}>{badge}</Text>
+          <View>
+            <Text className="font-avenirBold text-xs" style={{ color: highContrastMode ? '#000000' : '#3c3434' }}>{badge}</Text>
           </View>
         )}
         <Ionicon name="chevron-forward" size={16} color={disabled ? (highContrastMode ? "#666666" : "#d1d5db") : (highContrastMode ? "#000000" : "#9ca3af")} />
@@ -265,7 +265,7 @@ function CustomDrawerContent({ navigation, isPortrait }) {
       <DrawerContentScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 0 }}>
         {/* Fixed Header */}
         <View className="px-4 pt-8 pb-4" style={[{ position: 'sticky', top: 0, zIndex: 10 }, headerStyle]}>
-          <View className="flex flex-row items-center justify-between mb-3">
+          <View className="flex flex-row items-top justify-between mb-3">
             <View className="flex-1">
               <Text className="font-avenirBold text-2xl text-gray-800">{APP_NAME}</Text>
               <Text className="font-avenirMedium text-sm text-gray-500">{APP_SUBTITLE}</Text>
@@ -275,13 +275,13 @@ function CustomDrawerContent({ navigation, isPortrait }) {
             <TouchableOpacity
               onPress={() => navigation.closeDrawer()}
               className="p-2 rounded-full"
-              style={{
+              /* style={{
                 backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                 borderWidth: highContrastMode ? 1 : 0,
                 borderColor: highContrastMode ? '#000000' : 'transparent',
-              }}
+              }} */
             >
-              <Ionicon name="close" size={24} color={highContrastMode ? "#000000" : "#ef4444"} />
+              <Ionicon name="close" size={24} color={highContrastMode ? "#000000" : "#484444"}/>
             </TouchableOpacity>
           </View>
 

@@ -94,12 +94,12 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                 className='p-3 rounded-xl'
                 onPress={handlePress}
                 style={{
-                    backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)',
-                    borderWidth: 1,
-                    borderColor: highContrastMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(59, 130, 246, 0.2)',
+                    //backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)',
+                    //borderWidth: 1,
+                    //borderColor: highContrastMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(59, 130, 246, 0.2)',
                 }}
             >
-                <Icon name="menu-outline" size={24} color={highContrastMode ? "#000000" : "#3b82f6"} />
+                <Icon name="menu-outline" size={36} color={highContrastMode ? "#000000" : "#383435"} />
             </TouchableOpacity>
 
             <View className="flex-1 mx-4">
