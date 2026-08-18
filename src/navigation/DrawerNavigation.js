@@ -10,7 +10,7 @@ import AppStack from './AppStack';
 import React, { useState, useEffect } from 'react';
 import { Dimensions, View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport, setShowSettingsScreen} from '../store/modal';
+import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport} from '../store/modal';
 import ProjectList from '../components/projects/ProjectList';
 import BluetoothDevices from '../components/projects/BluetoothDevices';
 import AboutMsituModal from '../components/misc/AboutMsituModal';
@@ -360,8 +360,13 @@ function CustomDrawerContent({ navigation, isPortrait }) {
                   item.comingSoon ? "#9ca3af" : "#3b82f6"
                 )}
                 onPress={() => {
-                  navigation.closeDrawer();
-                  navigation.navigate("Drawer" ,{screen: "Settings"})
+                  switch(item.label){
+                    case "Settings":
+                      navigation.closeDrawer();
+                      navigation.navigate("Drawer" ,{screen: "Settings"})
+                    default:
+                      handleMenuItemAction(item, navigation, dispatch)
+                  }
                 }}
                 delay={900 + (index * 100)}
                 highContrastMode={highContrastMode}
@@ -409,12 +414,12 @@ export default function DrawerNavigation(props) {
 
 
       <ProjectList
-        show={modalStore.showProjectList}
+        visible={modalStore.showProjectList}
         onClose={() => dispatch(setShowProjectList(false))}
       />
       <BluetoothDevices
-         show={modalStore.showBTDevices}
-         onClose={() => dispatch(setShowBTDevices(false))}
+        visible={modalStore.showBTDevices}
+        onClose={() => dispatch(setShowBTDevices(false))}
       />
       <AboutMsituModal
         visible={modalStore.showAboutMsitu}
