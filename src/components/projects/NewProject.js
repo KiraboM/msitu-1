@@ -19,7 +19,7 @@ const animation = new SlideAnimation({
     useNativeDriver: true
 })
 
-export default function NewProject({ show, onClose, roverLocation }) {
+export default function NewProject({ visible, onClose, roverLocation }) {
 
     const [checkedFirstPoint, setCheckedFirstPoint] = useState(false)
     const [checkedSecondPoint, setCheckedSecondPoint] = useState(false)
@@ -113,7 +113,7 @@ export default function NewProject({ show, onClose, roverLocation }) {
     }, [checkedSecondPoint])
     return (
         <Modal
-            visible={show}
+            visible={visible}
             modalAnimation={animation}
             modalTitle={
                 <ModalTitle
@@ -141,11 +141,12 @@ export default function NewProject({ show, onClose, roverLocation }) {
                 style={{
                     marginTop: 5,
                     justifyContent: 'center',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    height: 1000
                 }}
             >
                 <View className='p-2 w-96'>
-                    <ScrollView>
+                    <ScrollView nestedScrollEnabled={true}>
                         <MsTextInput
                             onChangeText={setProjectName}
                             label="Project Name" />

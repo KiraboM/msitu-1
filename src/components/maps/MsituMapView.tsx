@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react';
+import React, {useEffect, useState, useRef, useCallback, useMemo} from 'react'; //pointer
 import MapView, {
   PROVIDER_GOOGLE,
   Polyline,
@@ -25,6 +25,7 @@ interface MapProps {
   basePoints: Array<{latitude: number; longitude: number}>;
   visibleLines: Array<Array<LatLng>>;
   roverLocation: LatLong | null;
+  pointerEvents: 'none' | 'box-none' | 'box-only' | 'auto';
   planting: boolean;
   rotationDegrees?: number;
   onPolygonCoordsChange?: (coords: Array<LatLng>) => void;
@@ -50,6 +51,7 @@ const MsituMapView: React.FC<MapProps> = ({
   basePoints,
   visibleLines,
   roverLocation,
+  pointerEvents,
   planting,
   rotationDegrees = 180,
   onPolygonCoordsChange,
@@ -347,6 +349,7 @@ const MsituMapView: React.FC<MapProps> = ({
       mapType={mapType}
       onPress={handleMapPress}
       region={initialRegion}
+      pointerEvents={pointerEvents}
       camera={{
         center: initialRegion,
         zoom: 21,

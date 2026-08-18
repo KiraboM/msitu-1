@@ -63,6 +63,7 @@
     "@react-native/metro-config": "0.86.2",
     "@react-native/typescript-config": "^0.86.2",
     "@types/jest": "^29.5.13",
+    "@types/lodash": "^4.17.25",
     "@types/react": "^19.2.0",
     "@types/react-native-modals": "^0.22.4",
     "@types/react-native-sqlite-storage": "^6.0.5",

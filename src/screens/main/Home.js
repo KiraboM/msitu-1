@@ -265,6 +265,7 @@ const Home = ({ navigation }) => {
         initialRegion={initialRegion}
         areaMode={areaMode}
         roverLocation={roverLocation}
+        pointerEvents={modalStore.showCreateNewProjects ? 'none' : 'auto'}
         onPolygonCoordsChange={(coords)=>{
           const a = RTNMsitu.calculateArea(coords,1.0);
           setArea(a);
@@ -318,7 +319,7 @@ const Home = ({ navigation }) => {
       <NewProject
         roverLocation={roverLocation}
         onClose={() => dispatch(setShowCreateNewProjects(false))}
-        show={modalStore.showCreateNewProjects} />
+        visible={modalStore.showCreateNewProjects} />
       <MetricsConfigModal
         visible={showPlantingConfig}
         onClose={(result) => {
