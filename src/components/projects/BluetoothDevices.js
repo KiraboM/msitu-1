@@ -1,5 +1,6 @@
 import {
     View,
+    Modal,
     Text,
     TouchableOpacity,
     ActivityIndicator,
@@ -7,7 +8,6 @@ import {
     Dimensions
 } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { BottomModal, ModalFooter, ModalButton, ModalContent } from 'react-native-modals';
 import MCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Ionicon from 'react-native-vector-icons/Ionicons'
@@ -33,6 +33,10 @@ const { width } = Dimensions.get('window');
 
 export default function BluetoothDevices({ children, visible, onClose }) {
 
+    const handleClose = () => {
+      onClose();
+    };
+
     const [connecting, setConnecting] = useState(false);
     const [disconnecting, setDisconnecting] = useState(false);
     const [connectedDeviceId, setConnectedDeviceId] = useState(null);
@@ -46,7 +50,7 @@ export default function BluetoothDevices({ children, visible, onClose }) {
 
     // Animation values
     const modalScale = useSharedValue(0.8);
-    const modalOpacity = useSharedValue(0);
+    const modalOpacity = useSharedValue(0); //show
     const contentTranslateY = useSharedValue(50);
 
     useEffect(() => {
@@ -316,12 +320,20 @@ export default function BluetoothDevices({ children, visible, onClose }) {
     });
 
     return (
-        <BottomModal
+        <Modal
             visible={visible}
-            onTouchOutside={onClose}
-            modalTitle={
+            transparent
+            animationType="slide"
+            onRequestClose={handleClose}
+        >
+            <View style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', justifyContent: 'flex-end' }}>
                 <Reanimated.View style={modalAnimatedStyle}>
-                    <View className='flex border-b bg-white rounded-t-3xl' style={{
+                    <View className='flex bg-white rounded-t-3xl' style={{
+                        backgroundColor: highContrastMode ? '#ffffff' : '#ffffff',
+                        borderTopLeftRadius: 24,
+                        borderTopRightRadius: 24,
+                    }}>
+                        <View className='flex border-b bg-white rounded-t-3xl' style={{
                         borderColor: highContrastMode ? '#000000' : '#e5e7eb',
                         backgroundColor: highContrastMode ? '#ffffff' : '#ffffff',
                     }}>
@@ -392,43 +404,39 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                             </View>
                         </View>
                     </View>
-                </Reanimated.View>
-            }
-            footer={
-                <ModalFooter>
-                    <ModalButton
-                        text="Close"
-                        textStyle={[styles.buttonText, { color: '#3b82f6', fontWeight: '600' }]}
-                        onPress={() => { onClose() }}
-                    />
-                </ModalFooter>
-            }
-        >
-            <Reanimated.View style={contentAnimatedStyle}>
-                <ModalContent>
-                    <ScrollView className='h-80' showsVerticalScrollIndicator={false}>
-                        {deviceList.length === 0 ? (
-                            <View className="flex items-center justify-center py-12">
-                                <MCommunityIcons name="bluetooth-off" size={48} color="#9ca3af" />
-                                <Text className="font-avenirMedium text-gray-500 text-lg mt-4 text-center">
-                                    No devices found
-                                </Text>
-                                <Text className="font-avenirMedium text-gray-400 text-sm mt-2 text-center">
-                                    Tap the scan button to discover devices
-                                </Text>
+                        <Reanimated.View style={contentAnimatedStyle}>
+                            <View className="px-6 py-2">
+                                <ScrollView className='h-80' showsVerticalScrollIndicator={false}>
+                                    {deviceList.length === 0 ? (
+                                        <View className="flex items-center justify-center py-12">
+                                            <MCommunityIcons name="bluetooth-off" size={48} color="#9ca3af" />
+                                            <Text className="font-avenirMedium text-gray-500 text-lg mt-4 text-center">
+                                                No devices found
+                                            </Text>
+                                            <Text className="font-avenirMedium text-gray-400 text-sm mt-2 text-center">
+                                                Tap the scan button to discover devices
+                                            </Text>
+                                        </View>
+                                    ) : (
+                                        deviceList.map((device, idx) => (
+                                            <DeviceCard 
+                                                key={device.id} 
+                                                device={device} 
+                                                index={idx} 
+                                            />
+                                        ))
+                                    )}
+                                </ScrollView>
                             </View>
-                        ) : (
-                            deviceList.map((device, idx) => (
-                                <DeviceCard 
-                                    key={device.id} 
-                                    device={device} 
-                                    index={idx} 
-                                />
-                            ))
-                        )}
-                    </ScrollView>
-                </ModalContent>
-            </Reanimated.View>
-        </BottomModal>
+                        </Reanimated.View>
+                        <View className='flex flex-row justify-center items-center border-t border-gray-200 m-2 p-1'>
+                            <TouchableOpacity onPress={handleClose} className="p-3">
+                                <Text style={[styles.buttonText, { color: '#3b82f6', fontWeight: '600' }]}>Close</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Reanimated.View>
+            </View>
+        </Modal>
     )
 }
