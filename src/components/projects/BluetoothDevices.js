@@ -31,7 +31,7 @@ import Reanimated, {
 
 const { width } = Dimensions.get('window');
 
-export default function BluetoothDevices({ children, show, onClose }) {
+export default function BluetoothDevices({ children, visible, onClose }) {
 
     const [connecting, setConnecting] = useState(false);
     const [disconnecting, setDisconnecting] = useState(false);
@@ -50,7 +50,7 @@ export default function BluetoothDevices({ children, show, onClose }) {
     const contentTranslateY = useSharedValue(50);
 
     useEffect(() => {
-        if (show) {
+        if (visible) {
             modalScale.value = withSpring(1, { damping: 15, stiffness: 150 });
             modalOpacity.value = withTiming(1, { duration: 300 });
             contentTranslateY.value = withDelay(100, withSpring(0, { damping: 15, stiffness: 150 }));
@@ -59,7 +59,7 @@ export default function BluetoothDevices({ children, show, onClose }) {
             modalOpacity.value = withTiming(0, { duration: 200 });
             contentTranslateY.value = withSpring(50, { damping: 15, stiffness: 150 });
         }
-    }, [show]);
+    }, [visible]);
 
     const modalAnimatedStyle = useAnimatedStyle(() => {
         return {
@@ -125,13 +125,13 @@ export default function BluetoothDevices({ children, show, onClose }) {
     }
 
     useEffect(() => {
-        if (show) {
+        if (visible) {
             dispatch(getBondedDevices())
         }
-        if (!isBluetoothEnabled && show) {
+        if (!isBluetoothEnabled && visible) {
             openBTSettings()
         }
-    }, [isBluetoothEnabled, show])
+    }, [isBluetoothEnabled, visible])
 
     const DeviceCard = React.memo(({ device, index }) => {
         const isConnected = connectedDeviceId === device.id;
@@ -157,7 +157,7 @@ export default function BluetoothDevices({ children, show, onClose }) {
             subtitleColor.value = withTiming(isConnected ? 1 : 0, { duration: 400 });
         }, [isConnected, backgroundColor, borderColor, textColor, subtitleColor]);
 
-        // Icon animation for connection state
+        // Icon animation for connection state visible
         useEffect(() => {
             if (isConnected) {
                 iconScale.value = withSpring(1.1, { damping: 8, stiffness: 200 }, () => {
@@ -317,7 +317,7 @@ export default function BluetoothDevices({ children, show, onClose }) {
 
     return (
         <BottomModal
-            visible={show}
+            visible={visible}
             onTouchOutside={onClose}
             modalTitle={
                 <Reanimated.View style={modalAnimatedStyle}>
