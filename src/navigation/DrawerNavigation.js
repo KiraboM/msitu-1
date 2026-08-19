@@ -10,7 +10,7 @@ import AppStack from './AppStack';
 import React, { useState, useEffect } from 'react';
 import { Dimensions, View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport} from '../store/modal';
+import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport, setShowCreateNewProjects} from '../store/modal';
 import ProjectList from '../components/projects/ProjectList';
 import BluetoothDevices from '../components/projects/BluetoothDevices';
 import AboutMsituModal from '../components/misc/AboutMsituModal';
@@ -26,6 +26,7 @@ import Reanimated, {
   withDelay
 } from 'react-native-reanimated';
 import { Screen } from 'react-native-screens';
+import NewProject from '../components/projects/NewProject';
 
 const Drawer = createDrawerNavigator();
 
@@ -193,6 +194,9 @@ const handleMenuItemAction = (item, navigation, dispatch) => {
   }
 
   switch (item.action) {
+    case 'setShowCreateNewProjects':
+      dispatch(setShowCreateNewProjects(true))
+      break;
     case 'setShowProjectList':
       dispatch(setShowProjectList(true));
       break;
@@ -412,7 +416,10 @@ export default function DrawerNavigation(props) {
         />
       </Drawer.Navigator>
 
-
+      <NewProject
+        visible={modalStore.showCreateNewProjects}
+        onClose={() => dispatch(setShowCreateNewProjects(false))}
+      />
       <ProjectList
         visible={modalStore.showProjectList}
         onClose={() => dispatch(setShowProjectList(false))}
