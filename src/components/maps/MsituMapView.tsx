@@ -26,6 +26,10 @@ interface MapProps {
   visibleLines: Array<Array<LatLng>>;
   roverLocation: LatLong | null;
   pointerEvents: 'none' | 'box-none' | 'box-only' | 'auto';
+  scrollEnabled: boolean;
+  zoomEnabled: boolean;
+  rotateEnabled: boolean;
+  pitchEnabled: boolean;
   planting: boolean;
   rotationDegrees?: number;
   onPolygonCoordsChange?: (coords: Array<LatLng>) => void;
@@ -52,6 +56,10 @@ const MsituMapView: React.FC<MapProps> = ({
   visibleLines,
   roverLocation,
   pointerEvents,
+  scrollEnabled,
+  zoomEnabled,
+  rotateEnabled,
+  pitchEnabled,
   planting,
   rotationDegrees = 180,
   onPolygonCoordsChange,
@@ -350,6 +358,10 @@ const MsituMapView: React.FC<MapProps> = ({
       onPress={handleMapPress}
       region={initialRegion}
       pointerEvents={pointerEvents}
+      scrollEnabled={scrollEnabled}
+      zoomEnabled={zoomEnabled}
+      rotateEnabled={rotateEnabled}
+      pitchEnabled={pitchEnabled}
       camera={{
         center: initialRegion,
         zoom: 21,

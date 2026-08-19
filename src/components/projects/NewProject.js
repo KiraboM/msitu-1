@@ -142,10 +142,11 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                     marginTop: 5,
                     justifyContent: 'center',
                     alignItems: 'center',
-                    height: 1000
+                    height: 500,
+                    flex: 1
                 }}
             >
-                <View className='p-2 w-96'>
+                <View className='p-2 w-96' style={{flex: 1, maxHeight: 500}}>
                     <ScrollView nestedScrollEnabled={true}>
                         <MsTextInput
                             onChangeText={setProjectName}

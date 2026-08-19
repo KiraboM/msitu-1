@@ -266,6 +266,10 @@ const Home = ({ navigation }) => {
         areaMode={areaMode}
         roverLocation={roverLocation}
         pointerEvents={modalStore.showCreateNewProjects ? 'none' : 'auto'}
+        scrollEnabled={!modalStore.showCreateNewProjects}
+        zoomEnabled={!modalStore.showCreateNewProjects}
+        rotateEnabled={!modalStore.showCreateNewProjects}
+        pitchEnabled={!modalStore.showCreateNewProjects}
         onPolygonCoordsChange={(coords)=>{
           const a = RTNMsitu.calculateArea(coords,1.0);
           setArea(a);
