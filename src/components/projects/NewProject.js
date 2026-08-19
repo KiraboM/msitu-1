@@ -1,6 +1,5 @@
-import { View, Text, Image, ToastAndroid } from 'react-native'
+import { View, Text, Image, ToastAndroid, Modal, TouchableOpacity, StyleSheet } from 'react-native'
 import React, { useState, useEffect } from 'react'
-import { Modal, ModalFooter, ModalTitle, ModalButton, ModalContent, SlideAnimation } from 'react-native-modals';
 import styles from '../../assets/styles';
 import MsTextInput from '../input/MsTextInput';
 import MsCheckbox from '../input/MsCheckbox';
@@ -12,13 +11,45 @@ import { useDispatch, useSelector } from 'react-redux';
 import AnimatedLoader from "react-native-animated-loader";
 import { generateProject } from '../../store/projects';
 import { convertToMeters } from '../../utils';
-import { TouchableOpacity } from 'react-native';
 
-const animation = new SlideAnimation({
-    initialValue: 0,
-    slideFrom: 'bottom',
-    useNativeDriver: true
-})
+const modalStyles = StyleSheet.create({
+    overlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'flex-end',
+    },
+    box: {
+        height: '90%',
+        width: '100%',
+        backgroundColor: '#ffffff',
+        borderTopLeftRadius: 8,
+        borderTopRightRadius: 8,
+        overflow: 'hidden',
+    },
+    titleBar: {
+        paddingVertical: 16,
+        alignItems: 'center',
+        borderBottomWidth: StyleSheet.hairlineWidth,
+        borderBottomColor: '#CCD0D5',
+    },
+    footer: {
+        flexDirection: 'row',
+        borderTopWidth: StyleSheet.hairlineWidth,
+        borderTopColor: '#CCD0D5',
+    },
+    footerButton: {
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 16,
+    },
+    footerButtonBordered: {
+        borderLeftWidth: StyleSheet.hairlineWidth,
+        borderLeftColor: '#CCD0D5',
+    },
+    disabledText: {
+        color: '#C5C6C5',
+    },
+});
 
 export default function NewProject({ visible, onClose, roverLocation }) {
 
@@ -115,55 +146,30 @@ export default function NewProject({ visible, onClose, roverLocation }) {
     return (
         <Modal
             visible={visible}
-            modalAnimation={animation}
-            height={0.9}
-            width={1.0}
-            modalTitle={
-                <ModalTitle
-                    textStyle={styles.buttonText}
-                    title="Create New Project" />}
-            footer={
-                <ModalFooter>
-                    <ModalButton
-                        text="CANCEL"
-                        textStyle={[styles.buttonText, { color: 'red' }]}
-                        onPress={() => { onClose() }}
-                    />
-                    <ModalButton
-                        textStyle={styles.buttonText}
-                        disabled={generating}
-                        text="CREATE"
-                        onPress={() => {
-                            constructProject()
-                        }}
-                    />
-                </ModalFooter>
-            }
+            animationType="slide"
+            transparent={true}
+            onRequestClose={onClose}
         >
-            <ScrollView 
-                style={{flex: 1}} 
-                nestedScrollEnabled={true} 
-                scrollEnabled={true}  
-                contentContainerStyle={{flexGrow: 1}} 
-                keyboardShouldPersistTaps="handled" 
-                keyboardDismissMode="on-drag"
-            >
-                    <ModalContent
+            <View style={modalStyles.overlay}>
+                <View style={modalStyles.box}>
+                    <View style={modalStyles.titleBar}>
+                        <Text style={styles.buttonText}>Create New Project</Text>
+                    </View>
+                    <View
                         style={{
+                            flex: 1,
                             marginTop: 5,
-                            justifyContent: 'center',
-                            alignItems: 'center',
                         }}
                     >
-                        <View style={{flex: 1, height: 1000}}>
-                            {/* <ScrollView 
-                                style={{flex: 1}} 
-                                nestedScrollEnabled={true} 
-                                scrollEnabled={true}  
-                                contentContainerStyle={{flexGrow: 1}} 
-                                keyboardShouldPersistTaps="handled" 
-                                keyboardDismissMode="on-drag"
-                            > */}
+                        <ScrollView
+                            style={{ flex: 1, width: '100%' }}
+                            nestedScrollEnabled={true}
+                            scrollEnabled={true}
+                            contentContainerStyle={{ alignItems: 'center', paddingBottom: 16 }}
+                            keyboardShouldPersistTaps="handled"
+                            keyboardDismissMode="on-drag"
+                        >
+                            <View style={{ width: '100%' }}>
                                 <MsTextInput
                                     onChangeText={setProjectName}
                                     label="Project Name" />
@@ -290,8 +296,8 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                     }
 
                                 </View>
-                            {/* </ScrollView> */}
-                        </View>
+                            </View>
+                        </ScrollView>
                         <AnimatedLoader
                             visible={generating}
                             overlayColor="rgba(255,255,255,0.75)"
@@ -300,8 +306,26 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                             speed={1}>
                             <Text className="font-avenirMedium">Generating Mesh...</Text>
                         </AnimatedLoader>
-                </ModalContent>
-            </ScrollView>
+                    </View>
+                    <View style={modalStyles.footer}>
+                        <TouchableOpacity
+                            style={modalStyles.footerButton}
+                            onPress={() => { onClose() }}
+                        >
+                            <Text style={[styles.buttonText, { color: 'red' }]}>CANCEL</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[modalStyles.footerButton, modalStyles.footerButtonBordered]}
+                            disabled={generating}
+                            onPress={() => {
+                                constructProject()
+                            }}
+                        >
+                            <Text style={[styles.buttonText, generating && modalStyles.disabledText]}>CREATE</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
         </Modal>
     )
 }
