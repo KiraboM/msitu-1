@@ -51,6 +51,27 @@ const modalStyles = StyleSheet.create({
     },
 });
 
+const contrastBox = {
+    height: '90%',
+    width: '100%',
+    backgroundColor: '#070424',
+    borderTopLeftRadius: 8,
+    borderTopRightRadius: 8,
+    overflow: 'hidden',
+}
+const contrastTitleBar = {
+    color: '#ffffff',
+    paddingVertical: 16,
+    alignItems: 'center',
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomColor: '#CCD0D5'
+}
+
+const contrastBtnText = {
+    fontFamily: "AvenirBold",
+    color: '#ffffff'
+}
+
 export default function NewProject({ visible, onClose, roverLocation }) {
 
     const [checkedFirstPoint, setCheckedFirstPoint] = useState(false)
@@ -68,6 +89,8 @@ export default function NewProject({ visible, onClose, roverLocation }) {
 
     const dispatch = useDispatch()
     const { generating } = useSelector(store => store.project)
+    const { settings } = useSelector(store => store.settings);
+    const highContrastMode = settings?.highContrastMode || false;
 
     const constructProject = () => {
         if (!firstPoint) {
@@ -151,9 +174,9 @@ export default function NewProject({ visible, onClose, roverLocation }) {
             onRequestClose={onClose}
         >
             <View style={modalStyles.overlay}>
-                <View style={modalStyles.box}>
-                    <View style={modalStyles.titleBar}>
-                        <Text style={styles.buttonText}>Create New Project</Text>
+                <View style={highContrastMode ? contrastBox : modalStyles.box}>
+                    <View style={highContrastMode ? contrastTitleBar : modalStyles.titleBar}>
+                        <Text style={highContrastMode ? contrastBtnText : styles.buttonText}>Create New Project</Text>
                     </View>
                     <View
                         style={{
