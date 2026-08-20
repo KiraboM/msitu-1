@@ -64,7 +64,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
     });
 
     const containerStyle = {
-        backgroundColor: highContrastMode ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.95)',
+        backgroundColor: highContrastMode ? '#070424': '#ffffff',
         backdropFilter: 'blur(10px)',
         shadowColor: highContrastMode ? '#000000' : '#000',
         shadowOffset: { width: 0, height: 2 },
@@ -76,12 +76,12 @@ export default function TopNavBar({ navigation, hideNewProject }) {
     };
 
     const textStyle = {
-        color: highContrastMode ? '#000000' : '#1f2937',
+        color: highContrastMode ? '#ffffff' : '#1f2937',
         fontWeight: highContrastMode ? 'bold' : 'normal',
     };
 
     const subtitleStyle = {
-        color: highContrastMode ? '#000000' : '#6b7280',
+        color: highContrastMode ? '#ffffff' : '#6b7280',
         fontWeight: highContrastMode ? '600' : 'normal',
     };
 
@@ -99,7 +99,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                     //borderColor: highContrastMode ? 'rgba(0, 0, 0, 0.2)' : 'rgba(59, 130, 246, 0.2)',
                 }}
             >
-                <Icon name="menu-outline" size={36} color={highContrastMode ? "#000000" : "#383435"} />
+                <Icon name="menu-outline" size={36} color={highContrastMode ? "#ffffff" : "#383435"} />
             </TouchableOpacity>
 
             <View className="flex-1 mx-4">
@@ -125,10 +125,10 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                             isBluetoothEnabled ? (
                                 selectedDevice ? (
                                     <>
-                                        <MaterialIcons name="bluetooth-connected" size={16} color={highContrastMode ? "#000000" : "#16a34a"} />
+                                        <MaterialIcons name="bluetooth-connected" size={16} color={highContrastMode ? "#1e12f5" : "#16a34a"} />
                                         <Text className="font-avenirBold text-center mt-1"
                                             style={{
-                                                color: highContrastMode ? '#000000' : '#16a34a',
+                                                color: highContrastMode ? '#2f26d8' : '#16a34a',
                                                 fontSize: 8,
                                                 fontWeight: 'bold'
                                             }}
@@ -139,10 +139,10 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                                     </>
                                 ) : (
                                     <>
-                                        <MCommunityIcons name="bluetooth" size={16} color={highContrastMode ? "#000000" : "#3b82f6"} />
+                                        <MCommunityIcons name="bluetooth" size={16} color={highContrastMode ? "#ffffff" : "#3b82f6"} />
                                         <Text className="font-avenirBold text-center mt-1"
                                             style={{
-                                                color: highContrastMode ? '#000000' : '#3b82f6',
+                                                color: highContrastMode ? '#ffffff' : '#3b82f6',
                                                 fontSize: 8,
                                                 fontWeight: 'bold'
                                             }}
@@ -156,7 +156,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                                     <MCommunityIcons name="bluetooth-off" size={16} color={highContrastMode ? "#000000" : "#dc2626"} />
                                     <Text className="font-avenirBold text-center mt-1"
                                         style={{
-                                            color: highContrastMode ? '#000000' : '#dc2626',
+                                            color: highContrastMode ? '#db0000' : '#dc2626',
                                             fontSize: 8,
                                             fontWeight: 'bold'
                                         }}
