@@ -79,7 +79,7 @@ const AnimatedDrawerItem = ({ label, icon, onPress, delay = 0, description = nul
   const cardStyle = {
     backgroundColor: disabled
       ? (highContrastMode ? 'rgba(200, 200, 200, 0.9)' : 'rgba(245, 245, 245, 0.9)')
-      : (highContrastMode ? 'rgba(255, 255, 255, 0.9)' : 'rgba(255, 255, 255, 0.9)'),
+      : (highContrastMode ? '#2c303d' : 'rgba(255, 255, 255, 0.9)'),
     borderWidth: highContrastMode ? 1 : 0,
     borderColor: disabled
       ? (highContrastMode ? '#666666' : 'rgba(156, 163, 175, 0.2)')
@@ -102,14 +102,14 @@ const AnimatedDrawerItem = ({ label, icon, onPress, delay = 0, description = nul
   const labelStyle = {
     color: disabled
       ? (highContrastMode ? '#666666' : '#9ca3af')
-      : (highContrastMode ? '#000000' : '#1f2937'),
+      : (highContrastMode ? '#ffffff' : '#1f2937'),
     fontWeight: highContrastMode ? 'bold' : 'normal',
   };
 
   const descriptionStyle = {
     color: disabled
       ? (highContrastMode ? '#666666' : '#9ca3af')
-      : (highContrastMode ? '#000000' : '#6b7280'),
+      : (highContrastMode ? '#ffffff' : '#6b7280'),
     fontWeight: highContrastMode ? '600' : 'normal',
   };
 
@@ -250,35 +250,35 @@ function CustomDrawerContent({ navigation, isPortrait }) {
 
   // High contrast styles
   const headerStyle = {
-    backgroundColor: highContrastMode ? 'rgba(255, 255, 255, 0.98)' : 'rgba(248, 250, 252, 0.98)',
+    backgroundColor: highContrastMode ? '#070424' : 'rgba(248, 250, 252, 0.98)',
     borderBottomWidth: highContrastMode ? 2 : 0,
     borderBottomColor: highContrastMode ? '#000000' : 'transparent',
   };
 
   const titleStyle = {
-    color: highContrastMode ? '#000000' : '#1f2937',
+    color: highContrastMode ? '#ffffff' : '#1f2937',
     fontWeight: highContrastMode ? 'bold' : 'normal',
   };
 
   const subtitleStyle = {
-    color: highContrastMode ? '#000000' : '#6b7280',
+    color: highContrastMode ? '#ffffff' : '#6b7280',
     fontWeight: highContrastMode ? '600' : 'normal',
   };
 
   const versionStyle = {
-    color: highContrastMode ? '#000000' : '#9ca3af',
+    color: highContrastMode ? '#ffffff' : '#9ca3af',
     fontWeight: highContrastMode ? '600' : 'normal',
   };
 
   return (
-    <Reanimated.View style={[{ flexGrow: 1 }, animatedStyle]}>
+    <Reanimated.View style={[{ flexGrow: 1, backgroundColor: highContrastMode ? '#070424': '#ffffff'}, animatedStyle]}>
       <DrawerContentScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 0 }}>
         {/* Fixed Header */}
         <View className="px-4 pt-8 pb-4" style={[{ position: 'sticky', top: 0, zIndex: 10 }, headerStyle]}>
           <View className="flex flex-row items-top justify-between mb-3">
             <View className="flex-1">
-              <Text className="font-avenirBold text-2xl text-gray-800">{APP_NAME}</Text>
-              <Text className="font-avenirMedium text-sm text-gray-500">{APP_SUBTITLE}</Text>
+              <Text className="font-avenirBold text-2xl text-gray-800" style={{color: highContrastMode ? '#ffffff': '#6b7280'}}>{APP_NAME}</Text>
+              <Text className="font-avenirMedium text-sm text-gray-500" style={{color: highContrastMode ? '#ffffff': '#6b7280'}}>{APP_SUBTITLE}</Text>
               <Text className="font-avenirMedium text-xs mt-1" style={versionStyle}>Version {APP_VERSION}</Text>
               <Text className="font-avenirMedium text-xs mt-1" style={versionStyle}>Build {getBuildInfo()}</Text>
             </View>
@@ -291,7 +291,7 @@ function CustomDrawerContent({ navigation, isPortrait }) {
                 borderColor: highContrastMode ? '#000000' : 'transparent',
               }} */
             >
-              <Ionicon name="close" size={24} color={highContrastMode ? "#000000" : "#484444"}/>
+              <Ionicon name="close" size={24} color={highContrastMode ? "#ffffff" : "#484444"}/>
             </TouchableOpacity>
           </View>
 

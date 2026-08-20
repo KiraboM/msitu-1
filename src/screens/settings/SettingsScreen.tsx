@@ -270,7 +270,7 @@ const SettingsScreen: React.FC = () => {
                             className="rounded-full w-14 h-14 items-center justify-center"
                             //style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}
                         >
-                            <Icon color={highContrastMode ? "#000000" : "#484444"} name='keyboard-arrow-left' size={32} />
+                            <Icon color={highContrastMode ? "#ffffff" : "#484444"} name='keyboard-arrow-left' size={32} />
                         </TouchableOpacity>
                         <View className="items-center">
                             <Text className='font-avenirBold text-2xl' style={titleStyle}>Settings</Text>
