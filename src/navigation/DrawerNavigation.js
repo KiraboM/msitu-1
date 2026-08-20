@@ -5,6 +5,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppStack from './AppStack';
 import React, { useState, useEffect } from 'react';
@@ -181,6 +182,8 @@ const getIconComponent = (iconType, iconName, color) => {
       return <MaterialCommunityIcons name={iconName} size={24} color={color} />;
     case 'Entypo':
       return <Entypo name={iconName} size={24} color={color} />;
+    case 'AntDesignIcon':
+      return <AntDesign name={iconName} size={24} color={color}/>
     default:
       return <Ionicon name={iconName} size={24} color={color} />;
   }
