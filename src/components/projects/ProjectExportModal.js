@@ -188,16 +188,17 @@ const ProjectExportModal = ({ visible, onClose }) => {
               onPress={handleClose}
               className="rounded-full"
               style={{
-                backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(239, 68, 68, 0.15)',
+                /* backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(239, 68, 68, 0.15)',
                 borderWidth: highContrastMode ? 1 : 0,
-                borderColor: highContrastMode ? '#000000' : 'transparent',
+                borderColor: highContrastMode ? '#000000' : 'transparent', */
                 width: 40,
                 height: 40,
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginBottom: 15
               }}
             >
-              <Icon name="close" size={20} color={highContrastMode ? "#000000" : "#ef4444"} />
+              <Icon name="close" size={24} color={highContrastMode ? "#000000" : "#484444"} />
             </TouchableOpacity>
           </View>
         </View>

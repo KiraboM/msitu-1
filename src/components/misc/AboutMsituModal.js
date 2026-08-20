@@ -186,12 +186,13 @@ const AboutMsituModal = ({ visible, onClose }) => {
               onPress={handleClose}
               className="p-2 rounded-full"
               style={{
-                backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                /* backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(239, 68, 68, 0.1)',
                 borderWidth: highContrastMode ? 1 : 0,
-                borderColor: highContrastMode ? '#000000' : 'transparent',
+                borderColor: highContrastMode ? '#000000' : 'transparent', */
+                marginBottom: 25
               }}
             >
-              <Icon name="close" size={24} color={highContrastMode ? "#000000" : "#ef4444"} />
+              <Icon name="close" size={24} color={highContrastMode ? "#000000" : "#484444"} />
             </TouchableOpacity>
           </View>
         </View>
