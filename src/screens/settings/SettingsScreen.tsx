@@ -261,7 +261,7 @@ const SettingsScreen: React.FC = () => {
             {/* Enhanced Header */}
             <Reanimated.View
                 className={`h-${isPortrait ? "1/5" : "1/4"} bg-gradient-to-b from-blue-50 to-white`}
-                style={highContrastMode ? { backgroundColor: highContrastMode ? '#070424' s: '#ffffff', borderBottomWidth: 2, borderBottomColor: '#000000' } : {}}
+                style={highContrastMode ? { backgroundColor: highContrastMode ? '#070424' : '#ffffff', borderBottomWidth: 2, borderBottomColor: '#000000' } : {}}
             >
                 <View className={`flex flex-col p-4 gap-3`} style={{ marginTop: isPortrait ? 40 : 32 }}>
                     <View className="flex flex-row items-center justify-between">
