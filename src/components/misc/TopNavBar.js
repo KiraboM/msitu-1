@@ -169,7 +169,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                     </View>
                 </TouchableOpacity>
 
-                {!hideNewProject && (
+                {/* {!hideNewProject && (
                     <TouchableOpacity
                         onPress={handleNewProject}
                         className='p-3 rounded-xl flex items-center justify-center'
@@ -181,7 +181,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
                     >
                         <AntDesignIcon name="addfolder" size={24} color={highContrastMode ? "#000000" : "#3b82f6"} />
                     </TouchableOpacity>
-                )}
+                )} */}
             </View>
         </Reanimated.View>
     )
