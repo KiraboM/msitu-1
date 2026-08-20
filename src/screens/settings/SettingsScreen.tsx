@@ -65,6 +65,7 @@ const AnimatedSettingCard = ({ children, index = 0, highContrast = false }: { ch
                     elevation: highContrast ? 4 : 2,
                     borderWidth: highContrast ? 2 : 1,
                     borderColor: highContrast ? 'rgba(0, 0, 0, 0.2)' : 'rgba(59, 130, 246, 0.1)',
+                    backgroundColor: highContrast ? '#2c303d' : '#ffffff'
                 }}
             >
                 {children}
@@ -250,17 +251,17 @@ const SettingsScreen: React.FC = () => {
     };
 
     // High contrast text styles
-    const titleStyle = highContrastMode ? { color: '#000000', fontWeight: 'bold' as const } : { color: '#1f2937' };
-    const subtitleStyle = highContrastMode ? { color: '#000000' } : { color: '#6b7280' };
-    const bodyTextStyle = highContrastMode ? { color: '#000000' } : { color: '#374151' };
-    const textStyle = highContrastMode ? { color: '#000000' } : { color: '#374151' };
+    const titleStyle = highContrastMode ? { color: '#ffffff', fontWeight: 'bold' as const } : { color: '#1f2937' };
+    const subtitleStyle = highContrastMode ? { color: '#ffffff' } : { color: '#6b7280' };
+    const bodyTextStyle = highContrastMode ? { color: '#ffffff' } : { color: '#374151' };
+    const textStyle = highContrastMode ? { color: '#f8f7f7' } : { color: '#374151' };//backgroundStyle
 
     return (
-        <View className="h-full" style={{ backgroundColor: highContrastMode ? "#ffffff" : "#f8fafc" }}>
+        <View className="h-full" style={{ backgroundColor: highContrastMode ? "#070424" : "#f8fafc" }}>
             {/* Enhanced Header */}
             <Reanimated.View
                 className={`h-${isPortrait ? "1/5" : "1/4"} bg-gradient-to-b from-blue-50 to-white`}
-                style={highContrastMode ? { backgroundColor: '#ffffff', borderBottomWidth: 2, borderBottomColor: '#000000' } : {}}
+                style={highContrastMode ? { backgroundColor: highContrastMode ? '#070424' s: '#ffffff', borderBottomWidth: 2, borderBottomColor: '#000000' } : {}}
             >
                 <View className={`flex flex-col p-4 gap-3`} style={{ marginTop: isPortrait ? 40 : 32 }}>
                     <View className="flex flex-row items-center justify-between">
@@ -290,7 +291,7 @@ const SettingsScreen: React.FC = () => {
                         <View className='flex flex-row justify-between items-center'>
                             <View className='flex flex-row items-center gap-4'>
                                 <View className="p-2 rounded-lg" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}>
-                                    <MaterialCommunityIcons name="contrast" size={20} color={highContrastMode ? "#000000" : "#3b82f6"} />
+                                    <MaterialCommunityIcons name="contrast" size={20} color={highContrastMode ? "#ffffff" : "#3b82f6"} />
                                 </View>
                                 <View>
                                     <Text className='font-avenirBold' style={titleStyle}>High Contrast Mode</Text>
@@ -313,7 +314,7 @@ const SettingsScreen: React.FC = () => {
                         <View className='flex flex-row justify-between items-center'>
                             <View className='flex flex-row items-center gap-4'>
                                 <View className="p-2 rounded-lg" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(34, 197, 94, 0.1)' }}>
-                                    <Image source={require("../../assets/plant.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#000000" : "#16a34a" }} />
+                                    <Image source={require("../../assets/plant.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#ffffff" : "#16a34a" }} />
                                 </View>
                                 <View>
                                     <Text className='font-avenirBold' style={titleStyle}>Planting Mode</Text>
@@ -332,7 +333,7 @@ const SettingsScreen: React.FC = () => {
                         <View className='flex flex-row justify-between items-center'>
                             <View className='flex flex-row items-center gap-4'>
                                 <View className="p-2 rounded-lg" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}>
-                                    <Image source={require("../../assets/surveying.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#000000" : "#3b82f6" }} />
+                                    <Image source={require("../../assets/surveying.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#ffffff" : "#3b82f6" }} />
                                 </View>
                                 <View>
                                     <Text className='font-avenirBold' style={titleStyle}>Survey Mode</Text>
@@ -355,7 +356,7 @@ const SettingsScreen: React.FC = () => {
                         <AnimatedSettingCard index={3} highContrast={highContrastMode}>
                             <View className='flex flex-row items-center gap-4 mb-3'>
                                 <View className="p-2 rounded-lg" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(168, 85, 247, 0.1)' }}>
-                                    <Image source={require("../../assets/point.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#000000" : "#a855f7" }} />
+                                    <Image source={require("../../assets/point.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#ffffff" : "#a855f7" }} />
                                 </View>
                                 <View className="flex-1">
                                     <MsTextInput
@@ -383,7 +384,7 @@ const SettingsScreen: React.FC = () => {
                         <AnimatedSettingCard index={4} highContrast={highContrastMode}>
                             <View className='flex flex-row items-center gap-4 mb-3'>
                                 <View className="p-2 rounded-lg" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(245, 158, 11, 0.1)' }}>
-                                    <Image source={require("../../assets/steel-mesh.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#000000" : "#f59e0b" }} />
+                                    <Image source={require("../../assets/steel-mesh.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#ffffff" : "#f59e0b" }} />
                                 </View>
                                 <View className="flex-1">
                                     <MsTextInput
@@ -487,7 +488,7 @@ const SettingsScreen: React.FC = () => {
                     <AnimatedSettingCard index={7} highContrast={highContrastMode}>
                         <View className='flex flex-row items-center gap-4 mb-4'>
                             <View className="p-2 rounded-lg" style={{ backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.1)' : 'rgba(59, 130, 246, 0.1)' }}>
-                                <Image source={require("../../assets/refresh.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#000000" : "#3b82f6" }} />
+                                <Image source={require("../../assets/refresh.png")} style={{ width: 20, height: 20, tintColor: highContrastMode ? "#ffffff" : "#3b82f6" }} />
                             </View>
                             <View className="flex-1">
                                 <View className="flex-row items-center mb-1">
