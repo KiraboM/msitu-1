@@ -361,6 +361,7 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                             setCheckedFirstPoint(!checkedFirstPoint);
                                             const isActive = !checkedFirstPoint;
                                         }}
+                                        highContrast={highContrastMode}
                                     />
                                     <MsCheckbox
                                         uncheckedColor='gray'
@@ -371,6 +372,7 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                         onPress={() => {
                                             setCheckedSecondPoint(!checkedSecondPoint);
                                         }}
+                                        highContrast={highContrastMode}
                                     />
                                     {
                                         (roverLocation === null)
