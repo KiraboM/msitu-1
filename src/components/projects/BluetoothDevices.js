@@ -329,23 +329,23 @@ export default function BluetoothDevices({ children, visible, onClose }) {
             <View style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', justifyContent: 'flex-end' }}>
                 <Reanimated.View style={modalAnimatedStyle}>
                     <View className='flex bg-white rounded-t-3xl' style={{
-                        backgroundColor: highContrastMode ? '#ffffff' : '#ffffff',
+                        backgroundColor: highContrastMode ? '#070424' : '#ffffff',
                         borderTopLeftRadius: 24,
                         borderTopRightRadius: 24,
                     }}>
                         <View className='flex border-b bg-white rounded-t-3xl' style={{
                         borderColor: highContrastMode ? '#000000' : '#e5e7eb',
-                        backgroundColor: highContrastMode ? '#ffffff' : '#ffffff',
+                        backgroundColor: highContrastMode ? '#070424' : '#ffffff',
                     }}>
                         <View className='flex-row justify-between items-center p-6 w-full'>
                             <View className="flex-1">
                                 <Text className='font-avenirBold text-2xl' style={{
-                                    color: highContrastMode ? '#000000' : '#1f2937'
+                                    color: highContrastMode ? '#ffffff' : '#1f2937'
                                 }}>
                                     Bluetooth Devices
                                 </Text>
                                 <Text className='font-avenirMedium text-sm mt-1' style={{
-                                    color: highContrastMode ? '#000000' : '#6b7280'
+                                    color: highContrastMode ? '#ffffff' : '#6b7280'
                                 }}>
                                     {deviceList.length} device{deviceList.length !== 1 ? 's' : ''} found
                                 </Text>
@@ -410,10 +410,10 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                                     {deviceList.length === 0 ? (
                                         <View className="flex items-center justify-center py-12">
                                             <MCommunityIcons name="bluetooth-off" size={48} color="#9ca3af" />
-                                            <Text className="font-avenirMedium text-gray-500 text-lg mt-4 text-center">
+                                            <Text className="font-avenirMedium text-lg mt-4 text-center" style={highContrastMode ? {color: '#ffffff'} : {color: '#6b7280'}}>
                                                 No devices found
                                             </Text>
-                                            <Text className="font-avenirMedium text-gray-400 text-sm mt-2 text-center">
+                                            <Text className="font-avenirMedium text-sm mt-2 text-center" style={highContrastMode ? {color: '#ffffff'} : {color: '#6b7280'}}>
                                                 Tap the scan button to discover devices
                                             </Text>
                                         </View>
