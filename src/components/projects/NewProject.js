@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import styles from '../../assets/styles';
 import MsTextInput from '../input/MsTextInput';
 import MsCheckbox from '../input/MsCheckbox';
+import DropDownPicker from 'react-native-dropdown-picker'
 import { ScrollView } from 'react-native-gesture-handler';
 import { Chip } from 'react-native-paper';
 import Icon from "react-native-vector-icons/MaterialCommunityIcons"
-import { Picker } from '@react-native-picker/picker';
 import { useDispatch, useSelector } from 'react-redux';
 import AnimatedLoader from "react-native-animated-loader";
 import { generateProject } from '../../store/projects';
@@ -86,6 +86,30 @@ export default function NewProject({ visible, onClose, roverLocation }) {
     const [firstPoint, setFirstPoint] = useState(null)
     const [secondPoint, setSecondPoint] = useState(null)
     const [basePoints, setBasePoints] = useState([])
+
+    const [openLineLengthUnit, setOpenLineLengthUnit] = useState(false)
+    const [lineLengthUnitItems, setLineLengthUnitItems] = useState([
+        { label: 'Units', value: '' },
+        { label: 'Feet', value: 'feet' },
+        { label: 'Metres', value: 'meter' },
+        { label: 'Acres', value: 'acres' },
+        { label: 'Miles', value: 'miles' },
+    ])
+
+    const [openGapSizeUnit, setOpenGapSizeUnit] = useState(false)
+    const [gapSizeUnitItems, setGapSizeUnitItems] = useState([
+        { label: 'Units', value: '' },
+        { label: 'Feet', value: 'feet' },
+        { label: 'Inches', value: 'inches' },
+        { label: 'Metres', value: 'meter' },
+    ])
+
+    const [openLineDirection, setOpenLineDirection] = useState(false)
+    const [lineDirectionItems, setLineDirectionItems] = useState([
+        { label: 'Line Draw Direction', value: '' },
+        { label: 'Left', value: 'RIGHT' },
+        { label: 'Right', value: 'LEFT' },
+    ])
 
     const dispatch = useDispatch()
     const { generating } = useSelector(store => store.project)
@@ -204,18 +228,30 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                         onChangeText={setLineLength}
 
                                     />
-                                    <Picker
-                                        style={{ width: 130, marginTop: 5 }}
-                                        selectedValue={lineLengthUnit}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            setLineLengthUnit(itemValue)
-                                        }>
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Units" value="" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Feet" value="feet" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Metres" value="meter" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Acres" value="acres" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Miles" value="miles" />
-                                    </Picker>
+                                    <DropDownPicker
+                                        style={{ width: 130, marginTop: 5, backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        containerStyle={{backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        textStyle={{ fontFamily: 'AvenirMedium', color: highContrastMode ? '#ffffff' : '#000000' }}
+                                        open={openLineLengthUnit}
+                                        value={lineLengthUnit}
+                                        items={lineLengthUnitItems}
+                                        setOpen={setOpenLineLengthUnit}
+                                        setValue={setLineLengthUnit}
+                                        setItems={setLineLengthUnitItems}
+                                        onOpen={() => { setOpenGapSizeUnit(false); setOpenLineDirection(false) }}
+                                        listMode="SCROLLVIEW"
+                                        arrowIconStyle={{
+                                            tintColor: highContrastMode ? '#ffffff' : '#000000'
+                                        }}
+                                        arrowIconContainerStyle={{
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
+                                        dropDownContainerStyle={{
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
+                                        zIndex={3000}
+                                        zIndexInverse={1000}
+                                    />
                                 </View>
                                 <View className='flex-row justify-between w-full gap-x-1 mt-3'>
                                     <MsTextInput
@@ -224,17 +260,30 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                         label="Gap Size"
                                         containerStyle={{ width: 150 }}
                                     />
-                                    <Picker
-                                        style={{ width: 130, marginTop: 5 }}
-                                        selectedValue={gapSizeUnit}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            setGapSizeUnit(itemValue)
-                                        }>
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Units" value="" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Feet" value="feet" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Inches" value="inches" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Metres" value="meter" />
-                                    </Picker>
+                                    <DropDownPicker
+                                        style={{ width: 130, marginTop: 5, backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        containerStyle={{backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        textStyle={{ fontFamily: 'AvenirMedium', color: highContrastMode ? '#ffffff' : '#000000' }}
+                                        open={openGapSizeUnit}
+                                        value={gapSizeUnit}
+                                        items={gapSizeUnitItems}
+                                        setOpen={setOpenGapSizeUnit}
+                                        setValue={setGapSizeUnit}
+                                        setItems={setGapSizeUnitItems}
+                                        onOpen={() => { setOpenLineLengthUnit(false); setOpenLineDirection(false) }}
+                                        listMode="SCROLLVIEW"
+                                        arrowIconStyle={{
+                                            tintColor: highContrastMode ? '#ffffff' : '#000000'
+                                        }}
+                                        arrowIconContainerStyle={{
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
+                                        dropDownContainerStyle={{
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
+                                        zIndex={2000}
+                                        zIndexInverse={2000}
+                                    />
                                 </View>
 
                                 <View className='flex flex-col items-center mt-4'>
@@ -276,15 +325,30 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                     }
                                 </View>
                                 <View className='w-full mt-2 border-b mx-2 border-teal-900'>
-                                    <Picker style={{ width: 320, border: 1 }}
-                                        selectedValue={gapSizeUnit}
-                                        onValueChange={(itemValue, itemIndex) =>
-                                            setLineDirection(itemValue)
-                                        }>
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Line Draw Direction" value="" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Left" value="RIGHT" />
-                                        <Picker.Item style={{ ...styles.textMedium }} label="Right" value="LEFT" />
-                                    </Picker>
+                                    <DropDownPicker 
+                                        style={{ width: 300, marginTop: 5, backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        containerStyle={{backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        textStyle={{ fontFamily: 'AvenirMedium', color: highContrastMode ? '#ffffff' : '#000000' }}
+                                        open={openLineDirection}
+                                        value={gapSizeUnit}
+                                        items={lineDirectionItems}
+                                        setOpen={setOpenLineDirection}
+                                        setValue={setLineDirection}
+                                        setItems={setLineDirectionItems}
+                                        onOpen={() => { setOpenLineLengthUnit(false); setOpenGapSizeUnit(false) }}
+                                        listMode="SCROLLVIEW"
+                                        arrowIconStyle={{
+                                            tintColor: highContrastMode ? '#ffffff' : '#000000'
+                                        }}
+                                        arrowIconContainerStyle={{
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
+                                        dropDownContainerStyle={{
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
+                                        zIndex={1000}
+                                        zIndexInverse={3000}
+                                    />
                                 </View>
                                 <View className='w-full mt-3'>
                                     <MsCheckbox
@@ -344,7 +408,7 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                 constructProject()
                             }}
                         >
-                            <Text style={[styles.buttonText, generating && modalStyles.disabledText]}>CREATE</Text>
+                            <Text style={[styles.buttonText, highContrastMode ? {color: '#1000f2'} : {color: '#1000f2'} ,generating && modalStyles.disabledText]}>CREATE</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
