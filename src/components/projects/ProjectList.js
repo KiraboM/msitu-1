@@ -225,6 +225,18 @@ export default function ProjectList({ children, visible, onClose }) {
         }
     }, [visible])
 
+    const backgroundStyle = {
+      backgroundColor: highContrastMode ? '#070424' : '#ffffff'
+    }
+
+    const titleStyle = {
+      color: highContrastMode ? '#ffffff' : '#1f2937'
+    }
+
+    const subtitleStyle = {
+      color: highContrastMode ? '#ffffff' : '#6b7280'
+    }
+
     return (
         <Modal
             visible={visible}
@@ -233,18 +245,18 @@ export default function ProjectList({ children, visible, onClose }) {
             onRequestClose={handleClose}
         >
           <View style={{ flex: 1, backgroundColor: 'rgba(0, 0, 0, 0.4)', justifyContent: 'flex-end' }}>
-                   <View style={{ backgroundColor: 'rgba(255, 255, 255, 0.98)', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+                   <View style={{ backgroundColor: highContrastMode ? '#070424' : '#ffffff', borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
                       <View className='flex flex-row justify-between items-center border-b border-gray-200 m-2 p-1'
                          style={{
-                          backgroundColor: 'rgba(255, 255, 255, 0.98)',
+                          backgroundColor: highContrastMode ? '#070424' : '#ffffff',
                           borderTopLeftRadius: 20,
                           borderTopRightRadius: 20,
                           minHeight: 60,
                           }}
                         >
                           <View className="flex-1 mr-3">
-                              <Text className='font-avenirBold text-gray-800 text-xl'>Project List</Text>
-                              <Text className='font-avenirMedium text-gray-500 text-sm mt-1'>
+                              <Text className='font-avenirBold text-xl' style={titleStyle}>Project List</Text>
+                              <Text className='font-avenirMedium text-sm mt-1' style={subtitleStyle}>
                                 {projectList.length} project{projectList.length !== 1 ? 's' : ''} found
                               </Text>
                           </View>
@@ -310,8 +322,8 @@ export default function ProjectList({ children, visible, onClose }) {
                           {!fetching && projectList.length === 0 && (
                             <View className="flex items-center justify-center py-6 w-full">
                               <MaterialCommunityIcons name="folder-open-outline" size={40} color="#9ca3af" />
-                              <Text className="font-avenirMedium text-gray-500 mt-2">No projects found</Text>
-                              <Text className="font-avenirMedium text-gray-400 text-sm text-center mt-1">
+                              <Text className="font-avenirMedium mt-2" style={subtitleStyle}>No projects found</Text>
+                              <Text className="font-avenirMedium text-sm text-center mt-1" style={subtitleStyle}>
                                 Create a new project to get started
                               </Text>
                             </View>
