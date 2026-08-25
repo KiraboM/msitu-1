@@ -362,18 +362,19 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                                     }}
                                     className="p-3 rounded-xl flex items-center justify-center"
                                     style={{
+                                        opacity: 1,
                                         backgroundColor: scanning 
-                                            ? (highContrastMode ? '#000000' : '#f3f4f6')
-                                            : (highContrastMode ? '#000000' : '#eff6ff'),
+                                            ? (highContrastMode ? 'rgba(59,130,246,0.1)' : '#f3f4f6')
+                                            : (highContrastMode ? 'rgba(59,130,246,0.1)' : '#eff6ff'),
                                         borderWidth: highContrastMode ? 1 : 0,
-                                        borderColor: highContrastMode ? '#000000' : 'transparent',
+                                        borderColor: highContrastMode ? 'rgba(59,130,246,0.1)' : 'transparent',
                                     }}
                                     disabled={scanning}
                                 >
                                     {scanning ? (
                                         <ActivityIndicator size="small" color={highContrastMode ? "#ffffff" : "#3b82f6"} />
                                     ) : (
-                                        <MCommunityIcons name="magnify" size={20} color={highContrastMode ? "#ffffff" : "#3b82f6"} />
+                                        <MCommunityIcons name="magnify" size={20} color={highContrastMode ? "#1997ff" : "#3b82f6"} />
                                     )}
                                 </TouchableOpacity>
                                 
@@ -385,19 +386,20 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                                     }}
                                     className="p-3 rounded-xl flex items-center justify-center"
                                     style={{
+                                        opacity: 1,
                                         backgroundColor: isBluetoothEnabled 
-                                            ? (highContrastMode ? '#000000' : '#f0fdf4')
-                                            : (highContrastMode ? '#000000' : '#fef2f2'),
+                                            ? (highContrastMode ? 'rgba(34,197,94,0.1)' : '#f0fdf4')
+                                            : (highContrastMode ? '#fef2f2' : '#fef2f2'),
                                         borderWidth: highContrastMode ? 1 : 0,
-                                        borderColor: highContrastMode ? '#000000' : 'transparent',
+                                        borderColor: highContrastMode ? 'rgba(34,197,94,0.1)' : 'transparent',
                                     }}
                                 >
                                     <MCommunityIcons 
                                         name={isBluetoothEnabled ? "bluetooth" : "bluetooth-off"} 
                                         size={20} 
                                         color={isBluetoothEnabled 
-                                            ? (highContrastMode ? '#ffffff' : '#16a34a')
-                                            : (highContrastMode ? '#ffffff' : '#dc2626')
+                                            ? (highContrastMode ? 'rgb(0, 255, 94)' : '#16a34a')
+                                            : (highContrastMode ? '#ff0000' : '#dc2626')
                                         } 
                                     />
                                 </TouchableOpacity>
