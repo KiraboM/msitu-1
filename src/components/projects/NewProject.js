@@ -107,8 +107,8 @@ export default function NewProject({ visible, onClose, roverLocation }) {
     const [openLineDirection, setOpenLineDirection] = useState(false)
     const [lineDirectionItems, setLineDirectionItems] = useState([
         { label: 'Line Draw Direction', value: '' },
-        { label: 'Left', value: 'RIGHT' },
-        { label: 'Right', value: 'LEFT' },
+        { label: 'Left', value: 'left' },
+        { label: 'Right', value: 'right' },
     ])
 
     const dispatch = useDispatch()
@@ -229,7 +229,12 @@ export default function NewProject({ visible, onClose, roverLocation }) {
 
                                     />
                                     <DropDownPicker
-                                        style={{ width: 130, marginTop: 5, backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        style={{ 
+                                            width: 130, 
+                                            marginTop: 5, 
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff',
+                                            borderColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
                                         containerStyle={{backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
                                         textStyle={{ fontFamily: 'AvenirMedium', color: highContrastMode ? '#ffffff' : '#000000' }}
                                         open={openLineLengthUnit}
@@ -261,7 +266,12 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                         containerStyle={{ width: 150 }}
                                     />
                                     <DropDownPicker
-                                        style={{ width: 130, marginTop: 5, backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        style={{ 
+                                            width: 130, 
+                                            marginTop: 5, 
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff',
+                                            borderColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
                                         containerStyle={{backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
                                         textStyle={{ fontFamily: 'AvenirMedium', color: highContrastMode ? '#ffffff' : '#000000' }}
                                         open={openGapSizeUnit}
@@ -326,11 +336,16 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                 </View>
                                 <View className='w-full mt-2 border-b mx-2 border-teal-900'>
                                     <DropDownPicker 
-                                        style={{ width: 300, marginTop: 5, backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
+                                        style={{ 
+                                            width: 300, 
+                                            marginTop: 5, 
+                                            backgroundColor: highContrastMode ? '#070424' : '#ffffff',
+                                            borderColor: highContrastMode ? '#070424' : '#ffffff'
+                                        }}
                                         containerStyle={{backgroundColor: highContrastMode ? '#070424' : '#ffffff'}}
                                         textStyle={{ fontFamily: 'AvenirMedium', color: highContrastMode ? '#ffffff' : '#000000' }}
                                         open={openLineDirection}
-                                        value={gapSizeUnit}
+                                        value={lineDirection}
                                         items={lineDirectionItems}
                                         setOpen={setOpenLineDirection}
                                         setValue={setLineDirection}
