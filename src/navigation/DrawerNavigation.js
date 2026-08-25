@@ -1,4 +1,4 @@
-import {
+import {//'react-native'
   createDrawerNavigator,
   DrawerContentScrollView,
 } from '@react-navigation/drawer';
@@ -9,7 +9,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AppStack from './AppStack';
 import React, { useState, useEffect } from 'react';
-import { Dimensions, View, Text, TouchableOpacity, ScrollView, StyleSheet} from 'react-native';
+import { Dimensions, View, Text, TouchableOpacity, ScrollView, StyleSheet, useWindowDimensions} from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setShowProjectList, setShowBTDevices, setShowAboutMsitu, setShowProjectExport, setShowCreateNewProjects} from '../store/modal';
 import ProjectList from '../components/projects/ProjectList';
@@ -235,6 +235,7 @@ function CustomDrawerContent({ navigation, isPortrait }) {
   // @ts-ignore
   const { settings } = useSelector(store => store.settings);
   const highContrastMode = settings?.highContrastMode || false;
+  const {height} = useWindowDimensions()
 
   React.useEffect(() => {
     opacityValue.value = withTiming(1, { duration: 600 });
@@ -271,7 +272,7 @@ function CustomDrawerContent({ navigation, isPortrait }) {
   };
 
   return (
-    <Reanimated.View style={[{ flexGrow: 1, backgroundColor: highContrastMode ? '#070424': '#ffffff'}, animatedStyle]}>
+    <Reanimated.View style={[{ flexGrow: 1, backgroundColor: highContrastMode ? '#070424': '#ffffff', flex: 1}, {height}, animatedStyle]}>
       <DrawerContentScrollView contentContainerStyle={{ flexGrow: 1, paddingTop: 0 }}>
         {/* Fixed Header */}
         <View className="px-4 pt-8 pb-4" style={[{ position: 'sticky', top: 0, zIndex: 10 }, headerStyle]}>
@@ -401,9 +402,10 @@ export default function DrawerNavigation(props) {
             headerShown: false,
             overlayColor: 'rgba(0, 0, 0, 0.4)',
             drawerStyle: {
-              marginTop: 50,
+              marginTop: 0,
               marginBottom: 0,
               width: drawerWidth,
+              flexGrow: 1,
               backgroundColor: 'rgba(248, 250, 252, 0.98)',
               borderTopRightRadius: 0,
               borderBottomRightRadius: 0,

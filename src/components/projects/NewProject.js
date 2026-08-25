@@ -86,6 +86,7 @@ export default function NewProject({ visible, onClose, roverLocation }) {
     const [firstPoint, setFirstPoint] = useState(null)
     const [secondPoint, setSecondPoint] = useState(null)
     const [basePoints, setBasePoints] = useState([])
+    const [roverNotFound, setRoverNotFound] = useState(false)
 
     const [openLineLengthUnit, setOpenLineLengthUnit] = useState(false)
     const [lineLengthUnitItems, setLineLengthUnitItems] = useState([
@@ -151,13 +152,18 @@ export default function NewProject({ visible, onClose, roverLocation }) {
             setSecondPoint(null) // making sure, first point is selected first
             setBasePoints([])
         } else {
-            setFirstPoint(roverLocation)
-            setBasePoints([{ latitude: roverLocation.latitude, longitude: roverLocation.longitude }])
-            ToastAndroid.showWithGravity(
-                `First base Point selected`,
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
-            );
+            try{
+                setFirstPoint(roverLocation)
+                setBasePoints([{ latitude: roverLocation.latitude, longitude: roverLocation.longitude }])
+                ToastAndroid.showWithGravity(
+                    `First base Point selected`,
+                    ToastAndroid.SHORT,
+                    ToastAndroid.CENTER,
+                );
+                setRoverNotFound(false)
+            } catch (err){
+                setRoverNotFound(true);
+            }
         }
     }, [checkedFirstPoint])
 
@@ -168,27 +174,32 @@ export default function NewProject({ visible, onClose, roverLocation }) {
             points.pop()
         } else {
 
-            setSecondPoint(roverLocation);
-            if (basePoints.length == 0) {
+            try{
+                setSecondPoint(roverLocation);
+                if (basePoints.length == 0) {
+                    ToastAndroid.showWithGravity(
+                        `Select the second point only if the first is selected.`,
+                        ToastAndroid.SHORT,
+                        ToastAndroid.CENTER,
+                    );
+                    return;
+                }
+                else if (basePoints.length > 1) {
+                    points[1] = { latitude: roverLocation.latitude, longitude: roverLocation.longitude }
+                } else {
+                    points.push({ latitude: roverLocation.latitude, longitude: roverLocation.longitude })
+                }
                 ToastAndroid.showWithGravity(
-                    `Select the second point only if the first is selected.`,
+                    `Second base Point selected`,
                     ToastAndroid.SHORT,
                     ToastAndroid.CENTER,
                 );
-                return;
+                setRoverNotFound(false)
+                setBasePoints(points)
+            } catch(err){
+                setRoverNotFound(true);
             }
-            else if (basePoints.length > 1) {
-                points[1] = { latitude: roverLocation.latitude, longitude: roverLocation.longitude }
-            } else {
-                points.push({ latitude: roverLocation.latitude, longitude: roverLocation.longitude })
-            }
-            ToastAndroid.showWithGravity(
-                `Second base Point selected`,
-                ToastAndroid.SHORT,
-                ToastAndroid.CENTER,
-            );
         }
-        setBasePoints(points)
     }, [checkedSecondPoint])
     return (
         <Modal
@@ -400,6 +411,15 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                     }
 
                                 </View>
+
+                               { roverNotFound &&
+                               <View style={{
+                                    marginTop: 20,
+                                    alignItems: 'center'
+                               }}>
+                                    <Text style={{fontFamily: 'avenirBold', fontSize: 20, fontWeight: 'bold', color: '#f10000'}}>WARNING: Rover not connected!</Text>
+                               </View>
+                               }
                             </View>
                         </ScrollView>
                         <AnimatedLoader
