@@ -51,7 +51,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
             transform: [{ scale: scaleValue.value }],
             opacity: opacityValue.value,
         };
-    });
+    }, [scaleValue, opacityValue]);
 
     const bluetoothStatusStyle = useAnimatedStyle(() => {
         const backgroundColor = isBluetoothEnabled
@@ -61,7 +61,7 @@ export default function TopNavBar({ navigation, hideNewProject }) {
         return {
             backgroundColor: withTiming(backgroundColor, { duration: 300 }),
         };
-    });
+    }, [isBluetoothEnabled, selectedDevice]);
 
     const containerStyle = {
         backgroundColor: highContrastMode ? '#070424': '#ffffff',

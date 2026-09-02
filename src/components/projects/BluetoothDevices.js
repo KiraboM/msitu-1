@@ -24,9 +24,7 @@ import Reanimated, {
     useAnimatedStyle,
     withSpring,
     withTiming,
-    withDelay,
-    interpolate,
-    Extrapolation
+    withDelay
 } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
@@ -70,13 +68,13 @@ export default function BluetoothDevices({ children, visible, onClose }) {
             transform: [{ scale: modalScale.value }],
             opacity: modalOpacity.value,
         };
-    });
+    }, [modalScale, modalOpacity]);
 
     const contentAnimatedStyle = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: contentTranslateY.value }],
         };
-    });
+    }, [contentTranslateY]);
 
     const toggleDeviceConnectionStatus = async (device) => {
         setTappedDeviceId(device.id)
@@ -143,23 +141,11 @@ export default function BluetoothDevices({ children, visible, onClose }) {
         
         const cardScale = useSharedValue(1);
         const cardOpacity = useSharedValue(0);
-        const backgroundColor = useSharedValue(0);
-        const borderColor = useSharedValue(0);
         const iconScale = useSharedValue(1);
-        const textColor = useSharedValue(0);
-        const subtitleColor = useSharedValue(0);
 
         useEffect(() => {
             cardOpacity.value = withDelay(index * 100, withTiming(1, { duration: 300 }));
         }, [index]);
-
-        // Smooth transitions for connection state changes
-        useEffect(() => {
-            backgroundColor.value = withTiming(isConnected ? 1 : 0, { duration: 400 });
-            borderColor.value = withTiming(isConnected ? 1 : 0, { duration: 400 });
-            textColor.value = withTiming(isConnected ? 1 : 0, { duration: 400 });
-            subtitleColor.value = withTiming(isConnected ? 1 : 0, { duration: 400 });
-        }, [isConnected, backgroundColor, borderColor, textColor, subtitleColor]);
 
         // Icon animation for connection state visible
         useEffect(() => {
@@ -177,37 +163,13 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                 transform: [{ scale: cardScale.value }],
                 opacity: cardOpacity.value,
             };
-        });
-
-        const backgroundAnimatedStyle = useAnimatedStyle(() => {
-            const bgColor = interpolate(
-                backgroundColor.value,
-                [0, 1],
-                [highContrastMode ? '#ffffff' : '#ffffff', highContrastMode ? '#000000' : '#16a34a']
-            );
-            const borderColorValue = interpolate(
-                borderColor.value,
-                [0, 1],
-                [highContrastMode ? '#000000' : '#e5e7eb', highContrastMode ? '#000000' : '#16a34a']
-            );
-            
-            return {
-                backgroundColor: bgColor,
-                borderColor: borderColorValue,
-                borderWidth: highContrastMode ? 2 : 1,
-                shadowColor: highContrastMode ? '#000000' : (isConnected ? '#16a34a' : '#000'),
-                shadowOffset: { width: 0, height: 1 },
-                shadowOpacity: highContrastMode ? 0.3 : (isConnected ? 0.2 : 0.05),
-                shadowRadius: 4,
-                elevation: highContrastMode ? 5 : (isConnected ? 3 : 1),
-            };
-        });
+        }, [cardScale, cardOpacity]);
 
         const iconAnimatedStyle = useAnimatedStyle(() => {
             return {
                 transform: [{ scale: iconScale.value }],
             };
-        });
+        }, [iconScale]);
 
         const handlePress = () => {
             if (isProcessing) return;
@@ -230,19 +192,7 @@ export default function BluetoothDevices({ children, visible, onClose }) {
             ? (highContrastMode ? '#000000' : '#ffffff')
             : (highContrastMode ? '#000000' : '#3b82f6');
 
-        const textColorValue = interpolate(
-            textColor.value,
-            [0, 1],
-            [highContrastMode ? '#000000' : '#1f2937', highContrastMode ? '#ffffff' : '#ffffff']
-        );
-
-        const subtitleColorValue = interpolate(
-            subtitleColor.value,
-            [0, 1],
-            [highContrastMode ? '#000000' : '#6b7280', highContrastMode ? '#ffffff' : 'rgba(255, 255, 255, 0.9)']
-        );
-
-        const chevronColor = isConnected 
+        const chevronColor = isConnected
             ? (highContrastMode ? '#ffffff' : '#ffffff')
             : (highContrastMode ? '#000000' : '#9ca3af');
 
@@ -268,12 +218,13 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                     }}
                 >
                     <View className="p-2 rounded-lg mr-3" style={iconContainerStyle}>
-                        <MaterialIcons 
-                            name={isConnected ? "bluetooth-connected" : "bluetooth"} 
-                            size={20} 
-                            color={iconColor}
-                            style={iconAnimatedStyle}
-                        />
+                        <Reanimated.View style={iconAnimatedStyle}>
+                            <MaterialIcons
+                                name={isConnected ? "bluetooth-connected" : "bluetooth"}
+                                size={20}
+                                color={iconColor}
+                            />
+                        </Reanimated.View>
                     </View>
                     
                     <View className="flex-1">

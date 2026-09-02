@@ -38,7 +38,7 @@ const AboutMsituModal = ({ visible, onClose }) => {
     return {
       opacity: modalOpacity.value,
     };
-  });
+  }, [modalOpacity]);
 
   const contentAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -47,7 +47,7 @@ const AboutMsituModal = ({ visible, onClose }) => {
         { translateY: contentTranslateY.value }
       ],
     };
-  });
+  }, [modalScale, contentTranslateY]);
 
   const handleClose = () => {
     onClose();

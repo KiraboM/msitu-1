@@ -36,7 +36,7 @@ const AnimatedProjectItem = ({ project, index, onOpen, onDelete, onDeselect, isA
       transform: [{ scale: scaleValue.value }],
       opacity: opacityValue.value,
     };
-  });
+  }, [scaleValue, opacityValue]);
 
   const handlePress = (action) => {
     scaleValue.value = withSpring(0.95, { damping: 10, stiffness: 200 }, () => {

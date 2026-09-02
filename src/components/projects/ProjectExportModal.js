@@ -43,7 +43,7 @@ const ProjectExportModal = ({ visible, onClose }) => {
     return {
       opacity: modalOpacity.value,
     };
-  });
+  }, [modalOpacity]);
 
   const contentAnimatedStyle = useAnimatedStyle(() => {
     return {
@@ -52,7 +52,7 @@ const ProjectExportModal = ({ visible, onClose }) => {
         { translateY: contentTranslateY.value }
       ],
     };
-  });
+  }, [modalScale, contentTranslateY]);
 
   const handleClose = () => {
     onClose();

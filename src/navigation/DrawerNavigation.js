@@ -65,7 +65,7 @@ const AnimatedDrawerItem = ({ label, icon, onPress, delay = 0, description = nul
       transform: [{ scale: scaleValue.value }],
       opacity: opacityValue.value,
     };
-  });
+  }, [scaleValue, opacityValue]);
 
   const handlePress = () => {
     if (disabled) return;
@@ -156,7 +156,7 @@ const DrawerSection = ({ title, children, delay = 0, highContrastMode = false })
       opacity: opacityValue.value,
       transform: [{ translateY: translateYValue.value }],
     };
-  });
+  }, [opacityValue, translateYValue]);
 
   const titleStyle = {
     color: highContrastMode ? '#000000' : '#6b7280',
@@ -247,7 +247,7 @@ function CustomDrawerContent({ navigation, isPortrait }) {
       opacity: opacityValue.value,
       transform: [{ scale: scaleValue.value }],
     };
-  });
+  }, [opacityValue, scaleValue]);
 
   // High contrast styles
   const headerStyle = {
