@@ -421,10 +421,10 @@ export default function DrawerNavigation(props) {
         />
       </Drawer.Navigator>
 
-      <NewProject
+      {/* <NewProject
         visible={modalStore.showCreateNewProjects}
         onClose={() => dispatch(setShowCreateNewProjects(false))}
-      />
+      /> */}
       <ProjectList
         visible={modalStore.showProjectList}
         onClose={() => dispatch(setShowProjectList(false))}
