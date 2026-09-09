@@ -46,7 +46,7 @@ export const fetchProjects = createAsyncThunk(
         try {
             return await ProjectService.fetch("projects", ["id", "name", "basePoints","gapSize","lineLength", "gapSizeUnit", "lineLengthUnit"]);
         } catch (error) {
-            return thunkAPI.rejectWithValue(generateError(error));
+            thunkAPI.rejectWithValue(generateError(error));
         }
     },
 );
@@ -70,7 +70,7 @@ export const loadProject = createAsyncThunk(
             const {settings} = thunkAPI.getState().settings as Settings;
             return {project:jsProject, settings};
         } catch (error) {
-            return thunkAPI.rejectWithValue(generateError(error));
+            thunkAPI.rejectWithValue(generateError(error));
         }
     },
 );
@@ -80,26 +80,22 @@ export const generateProject = createAsyncThunk(
     async (params, thunkAPI) => {
         try {
             // @ts-ignore
-            const {firstPoint, name, secondPoint, lineDirection, meshType, gapSize, lineLength, gapSizeUnit, lineLengthUnit } = params;
-            // native MeshDirection/MeshType enums are uppercase and case-sensitive (e.g. LEFT, RIGHT, TRIANGLE, SQUARE)
-            const results = await RTNMsitu.generateMesh(firstPoint, secondPoint, lineDirection?.toUpperCase(), meshType?.toUpperCase(), parseFloat(gapSize), parseFloat(lineLength)) as string;
+            const { firstPoint, name, secondPoint, lineDirection, meshType, gapSize, lineLength } = params;
+            const results = await RTNMsitu.generateMesh(firstPoint, secondPoint, lineDirection.toUpperCase(), meshType.toUpperCase(), parseFloat(gapSize), parseFloat(lineLength)) as string;
             // lets process our lines
             const lines = JSON.parse(results)
             const basePoints = [firstPoint as LatLng, secondPoint as LatLng]
             let project = {
                 name,
                 basePoints,
-                gapSize:gapSize,
-                lineLength:lineLength,
-                gapSizeUnit:gapSizeUnit,
-                lineLengthUnit:lineLengthUnit,
-                createdAt:null,
                 // @ts-ignore
                 center: lines[0][0], // the very first one is the center
                 plantingLines: lines as Array<PlantingLine>,
                 markedPoints: [],
                 forwardIndex: 9,
                 backwardIndex:0,
+                gapSize:gapSize,
+                lineLength:lineLength,
                 lineCount:results.length
             } as Project
             //save project to DB
@@ -117,7 +113,7 @@ export const generateProject = createAsyncThunk(
             const {settings} = thunkAPI.getState().settings as Settings;
             return {project, settings};
         } catch (error) {
-            return thunkAPI.rejectWithValue(generateError(error));
+            thunkAPI.rejectWithValue(generateError(error));
         }
     },
 );
@@ -133,7 +129,7 @@ export const convertLinesToLatLong = createAsyncThunk(
             return coordLines;
 
         } catch (error) {
-            return thunkAPI.rejectWithValue(generateError(error));
+            thunkAPI.rejectWithValue(generateError(error));
         }
     },
 );
@@ -146,7 +142,7 @@ export const deleteProject = createAsyncThunk(
             await ProjectService.deleteItem(id, "projects");
             return id;
         } catch (error) {
-            return thunkAPI.rejectWithValue(generateError(error));
+            thunkAPI.rejectWithValue(generateError(error));
         }
     },
 );

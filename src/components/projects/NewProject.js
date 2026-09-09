@@ -135,15 +135,13 @@ export default function NewProject({ visible, onClose, roverLocation }) {
             return
         }
         const payload = {
-            firstPoint: firstPoint,
+            firstPoint,
+            secondPoint,
+            lineDirection,
+            meshType,
             name: projectName,
-            secondPoint: secondPoint,
-            lineDirection: lineDirection,
-            meshType: meshType,
             gapSize: convertToMeters(parseFloat(gapSize), gapSizeUnit),
-            lineLength: convertToMeters(parseFloat(lineLength), lineLengthUnit),
-            gapSizeUnit: gapSizeUnit,
-            lineLengthUnit: lineLengthUnit
+            lineLength: convertToMeters(parseFloat(lineLength), lineLengthUnit)
         }
         dispatch(generateProject(payload))
     }
