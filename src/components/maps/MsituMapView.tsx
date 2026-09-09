@@ -384,8 +384,9 @@ const MsituMapView: React.FC<MapProps> = ({
             {closestPoint && (
               <Circle
                 center={closestPoint}
-                radius={0.6}
-                strokeColor={'#ff0000'}
+                radius={0.3}
+                fillColor={'#ff0000'}
+                strokeColor={'#000000'}
                 strokeWidth={1}
                 zIndex={3}
               />
@@ -424,7 +425,7 @@ const MsituMapView: React.FC<MapProps> = ({
                 center={{latitude: point.latitude, longitude: point.longitude}}
                 radius={0.3}
                 strokeWidth={2}
-                fillColor="#ff0000"
+                fillColor="#00FF00"
                 strokeColor="#000000"
                 zIndex={10}
               />
@@ -454,8 +455,8 @@ const MsituMapView: React.FC<MapProps> = ({
                 key={`marked-${index}`}
                 center={point}
                 radius={0.3}
-                fillColor="#00FF00"
-                strokeColor="#00FF00"
+                fillColor="#1e7102"
+                strokeColor="#000000"
                 strokeWidth={2}
                 zIndex={5}
               />
