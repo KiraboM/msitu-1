@@ -23,6 +23,8 @@ import RNFS from 'react-native-fs';
 const AnimatedProjectItem = ({ project, index, onOpen, onDelete, onDeselect, isActive }) => {
   const scaleValue = useSharedValue(0);
   const opacityValue = useSharedValue(0);
+  const { settings } = useSelector(store => store.settings);
+  const highContrastMode = settings?.highContrastMode || false;
 
   React.useEffect(() => {
     scaleValue.value = withDelay(index * 100, withSpring(1, { damping: 15, stiffness: 150 }));
@@ -52,29 +54,35 @@ const AnimatedProjectItem = ({ project, index, onOpen, onDelete, onDeselect, isA
     }
   };
 
+  const projectNameColor = isActive ? 
+    {color: '#16a34a'} 
+    : highContrastMode ? {color: '#ffffff'} : {color: '#000000'}
+
+  const projectInfoColor = highContrastMode ? {color: '#ffffff'} : {color: '#6b7280'}
+
   return (
     <Reanimated.View style={animatedStyle}>
       <View className="flex flex-row justify-between p-3 mt-1 mb-1 mx-2 rounded-xl relative overflow-hidden"
         style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.9)',
+          backgroundColor: highContrastMode ? '#2c303d' : 'rgba(255, 255, 255, 0.9)',
           borderWidth: isActive ? 2 : 1,
           borderColor: isActive ? '#16a34a' : 'rgba(59, 130, 246, 0.1)',
           shadowColor: '#000',
           shadowOffset: { width: 0, height: 1 },
           shadowOpacity: 0.05,
           shadowRadius: 2,
-          elevation: 1,
+          elevation: 1
         }}
       >
         <View className="flex-1 pr-2">
           <View className="flex-row items-center mb-1">
-            <Text className='font-avenirBold text-base' style={{ color: isActive ? '#16a34a' : '#1f2937' }}>
+            <Text className='font-avenirBold text-base' style={projectNameColor}>
               {project.id}-{project.name}
             </Text>
           </View>
 
           <View className="flex-row items-center justify-between">
-            <Text className='font-avenirMedium text-xs' style={{ color: '#6b7280' }}>
+            <Text className='font-avenirMedium text-xs' style={projectInfoColor}>
               Length: {project.lineLength || 'N/A'} {project.lineLengthUnit || 'm'} • Gap: {(project.gapSize || 0).toFixed(2)} {project.gapSizeUnit || 'm'}
             </Text>
           </View>
