@@ -194,7 +194,7 @@ export default function BluetoothDevices({ children, visible, onClose }) {
 
         const chevronColor = isConnected
             ? (highContrastMode ? '#ffffff' : '#ffffff')
-            : (highContrastMode ? '#000000' : '#9ca3af');
+            : (highContrastMode ? '#ffffff' : '#9ca3af');
 
         return (
             <Reanimated.View style={cardAnimatedStyle}>
@@ -204,8 +204,8 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                     className="flex flex-row items-center p-3 rounded-xl mb-2 mx-2"
                     style={{
                         backgroundColor: isConnected 
-                            ? (highContrastMode ? '#000000' : '#16a34a') 
-                            : (highContrastMode ? '#ffffff' : '#ffffff'),
+                            ? (highContrastMode ? '#19a74d97' : '#16a34a') 
+                            : (highContrastMode ? '#2c303d' : '#ffffff'),
                         borderWidth: isConnected ? 2 : 1,
                         borderColor: isConnected 
                             ? (highContrastMode ? '#000000' : '#16a34a')
@@ -232,8 +232,8 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                             className="font-avenirBold text-base" 
                             style={{ 
                                 color: isConnected 
-                                    ? (highContrastMode ? '#ffffff' : '#ffffff')
-                                    : (highContrastMode ? '#000000' : '#1f2937')
+                                    ? (highContrastMode ? '#ffffff' : '#000000')
+                                    : (highContrastMode ? '#ffffff' : '#1f2937')
                             }}
                             numberOfLines={1}
                         >
@@ -244,7 +244,7 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                             style={{ 
                                 color: isConnected 
                                     ? (highContrastMode ? '#ffffff' : 'rgba(255, 255, 255, 0.9)')
-                                    : (highContrastMode ? '#000000' : '#6b7280')
+                                    : (highContrastMode ? '#ffffff' : '#6b7280')
                             }}
                         >
                             {isConnected ? 'Connected' : 'Tap to connect'}
