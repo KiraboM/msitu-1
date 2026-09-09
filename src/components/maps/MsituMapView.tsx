@@ -6,6 +6,7 @@ import MapView, {
   Circle,
   MAP_TYPES,
   MapType,
+  Marker,
 } from 'react-native-maps';
 import {Easing} from 'react-native-reanimated';
 import {throttle} from 'lodash';
@@ -372,7 +373,7 @@ const MsituMapView: React.FC<MapProps> = ({
       style={{flex: 1}}>
       <MemoizedRoverPosition
         // @ts-ignore
-        color={planting ? '#000C66' : '#FFFF00'}
+        color={planting ? '#0722eb' : '#FFFF00'}
         circleProps={memoizedCircleProps}
       />
 
@@ -384,15 +385,15 @@ const MsituMapView: React.FC<MapProps> = ({
               <Circle
                 center={closestPoint}
                 radius={0.6}
-                strokeColor={'blue'}
+                strokeColor={'#ff0000'}
                 strokeWidth={1}
                 zIndex={1}
               />
             )}
             <Polyline
               coordinates={line}
-              strokeColor="green"
-              strokeWidth={1.5}
+              strokeColor="#00fa2a65"
+              strokeWidth={3.5}
             />
             {line.map((coord, index) => {
               console.log(coord);
@@ -403,8 +404,8 @@ const MsituMapView: React.FC<MapProps> = ({
                     key={`${idx}-${index}`}
                     center={coord}
                     radius={0.3}
-                    fillColor={isMarked ? 'green' : 'red'}
-                    strokeColor={isMarked ? 'green' : 'red'}
+                    fillColor={isMarked ? 'green' : '#ff000088'}
+                    strokeColor={isMarked ? 'green' : 'black'}
                     strokeWidth={2}
                     zIndex={2}
                   />
@@ -423,9 +424,10 @@ const MsituMapView: React.FC<MapProps> = ({
                 center={{latitude: point.latitude, longitude: point.longitude}}
                 radius={0.2}
                 strokeWidth={1}
-                fillColor="#FFFF00"
-                strokeColor="#FFFF00"
+                fillColor="#ff0000"
+                strokeColor="#ff0000"
                 zIndex={10}
+                style={{borderColor: '#000000', borderStyle: 'solid', borderWidth: 2}}
               />
             ))}
           {polygonCoordinates.length >= 3 && (
