@@ -387,7 +387,7 @@ const MsituMapView: React.FC<MapProps> = ({
                 radius={0.6}
                 strokeColor={'#ff0000'}
                 strokeWidth={1}
-                zIndex={1}
+                zIndex={3}
               />
             )}
             <Polyline
@@ -404,7 +404,7 @@ const MsituMapView: React.FC<MapProps> = ({
                     key={`${idx}-${index}`}
                     center={coord}
                     radius={0.3}
-                    fillColor={isMarked ? 'green' : '#ff000088'}
+                    fillColor={isMarked ? 'green' : '#ff00008a'}
                     strokeColor={isMarked ? 'green' : 'black'}
                     strokeWidth={2}
                     zIndex={2}
@@ -422,19 +422,18 @@ const MsituMapView: React.FC<MapProps> = ({
               <Circle
                 key={`base-point-${index}`}
                 center={{latitude: point.latitude, longitude: point.longitude}}
-                radius={0.2}
-                strokeWidth={1}
+                radius={0.3}
+                strokeWidth={2}
                 fillColor="#ff0000"
-                strokeColor="#ff0000"
+                strokeColor="#000000"
                 zIndex={10}
-                style={{borderColor: '#000000', borderStyle: 'solid', borderWidth: 2}}
               />
             ))}
           {polygonCoordinates.length >= 3 && (
             <Polygon
               coordinates={polygonCoordinates}
               strokeColor="blue"
-              fillColor="rgba(135, 206, 250, 0.3)"
+              fillColor="rgba(233, 250, 135, 0.3)"
               strokeWidth={2}
             />
           )}
@@ -475,10 +474,10 @@ const MsituMapView: React.FC<MapProps> = ({
                 }
                 strokeColor={
                   selectedPlantingLines.some(sublist => sublist[1] === idx)
-                    ? 'orange'
-                    : 'blue'
+                    ? '#0400fb'
+                    : '#1310e34f'
                 }
-                strokeWidth={1.5}
+                strokeWidth={3}
               />
             </React.Fragment>
           ))}
