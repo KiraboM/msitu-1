@@ -535,7 +535,12 @@ const MsituMapView: React.FC<MapProps> = ({
       )}
     </MapView>
     {settingPoint && (
-      <View>
+      <View
+        style={{
+          backgroundColor: '#ffffff',
+          alignContent: 'center'
+        }}
+      >
         <Text
           style={{
             color: '#09b220',
