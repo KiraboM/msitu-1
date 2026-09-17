@@ -147,9 +147,10 @@ const ProjectExportModal = ({ visible, onClose }) => {
   };
 
   const projectCardStyle = {
-    backgroundColor: highContrastMode ? '#070424' : 'rgba(255, 255, 255, 0.8)',
+    backgroundColor: highContrastMode ? '#2c303d' : 'rgba(255, 255, 255, 0.8)',
     borderWidth: highContrastMode ? 2 : 1,
-    borderColor: highContrastMode ? '#000000' : 'rgba(59, 130, 246, 0.1)',
+    borderColor: highContrastMode ? '#2c303d' : 'rgba(59, 130, 246, 0.1)',
+    marginBottom: 10
   };
 
   const projectNameStyle = {
