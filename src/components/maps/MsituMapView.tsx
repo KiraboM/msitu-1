@@ -16,7 +16,6 @@ import LatLong from '../../services/NMEAService';
 import {setCyrusLines} from '../../store/pegging';
 import {saveProjectMarkedPoints} from '../../store/projects';
 import {useDispatch, useSelector} from 'react-redux';
-import {RTNMsitu} from 'rtn-msitu';
 import {pointToString} from '../../utils';
 import {Project} from '../../models';
 
@@ -47,6 +46,17 @@ interface LatLng {
   latitude: number;
   longitude: number;
 }
+
+// Equirectangular metres between two coords. Accurate to sub-mm at the short
+// distances used for pegging, and avoids a native bridge round-trip on the
+// hot path (which was contending with the high-frequency rover polling).
+const metersBetween = (a: LatLng, b: LatLng): number => {
+  const R = 6371000;
+  const lat0 = (a.latitude * Math.PI) / 180;
+  const dLat = ((b.latitude - a.latitude) * Math.PI) / 180;
+  const dLon = (((b.longitude - a.longitude) * Math.PI) / 180) * Math.cos(lat0);
+  return R * Math.sqrt(dLat * dLat + dLon * dLon);
+};
 
 const MemoizedRoverPosition = React.memo(RoverPosition);
 
@@ -220,17 +230,36 @@ const MsituMapView: React.FC<MapProps> = ({
     }
   }, [areaMode, polygonCoordinates.length]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const throttledPointSearch = useCallback(
-    throttle(async (location: LatLng) => {
-      const result = await RTNMsitu.closetPointRelativeToRoverPosition(
-        location,
-        combinedPoints,
-      );
-      if (result) {
-        setClosestPoint(result);
+  // Find the nearest peg entirely in JS. This used to call a native module
+  // over the bridge on every move; combined with the high-frequency rover
+  // polling, that bridge contention made pegging lag badly. A local scan over
+  // combinedPoints is effectively free and updates in real time — no throttle
+  // or async needed. setClosestPoint keeps the same object reference when the
+  // nearest peg is unchanged, so it only re-renders when the peg actually flips.
+  const findClosestPoint = useCallback(
+    (location: LatLng) => {
+      if (combinedPoints.length === 0) {
+        return;
       }
-    }, 1000),
+      const lat0 = location.latitude;
+      const lon0 = location.longitude;
+      const cosLat = Math.cos((lat0 * Math.PI) / 180);
+      let closest: LatLng | null = null;
+      let minSq = Infinity;
+      for (let i = 0; i < combinedPoints.length; i++) {
+        const p = combinedPoints[i];
+        const dLat = p.latitude - lat0;
+        const dLon = (p.longitude - lon0) * cosLat;
+        const sq = dLat * dLat + dLon * dLon;
+        if (sq < minSq) {
+          minSq = sq;
+          closest = p;
+        }
+      }
+      if (closest) {
+        setClosestPoint(closest);
+      }
+    },
     [combinedPoints],
   );
 
@@ -240,7 +269,7 @@ const MsituMapView: React.FC<MapProps> = ({
       if (LatLong.significantChange(prevRoverLocation, roverLocation)) {
         throttledAnimate(roverLocation);
         if (planting && combinedPoints.length > 0) {
-          throttledPointSearch(roverLocation);
+          findClosestPoint(roverLocation);
         }
       }
       prevRoverLocationRef.current = roverLocation;
@@ -250,7 +279,7 @@ const MsituMapView: React.FC<MapProps> = ({
     combinedPoints,
     throttledAnimate,
     planting,
-    throttledPointSearch,
+    findClosestPoint,
   ]);
 
   useEffect(() => {
@@ -283,7 +312,13 @@ const MsituMapView: React.FC<MapProps> = ({
         {duration: 1000},
       );
     }
-  }, [activeProject]);
+    // Key on the project identity, NOT the whole object: marking a point
+    // mutates activeProject.markedPoints (a new reference), and re-running
+    // this would snap the camera back to heading 0 / base point and undo the
+    // user's manual pinch-rotate. We only want to recenter when a different
+    // project actually loads.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [(activeProject as Project)?.id]);
 
   useEffect(() => {
     if (planting) {
@@ -299,37 +334,72 @@ const MsituMapView: React.FC<MapProps> = ({
     }
   }, [dispatch, markedPoints.length, planting]);
 
+  // Set of already-marked pegs, rebuilt only when the marked points actually
+  // change — not a fresh Set per peg per render (and no stale closure, so pegs
+  // turn green as soon as they're marked).
+  const markedSet = useMemo(() => {
+    const pts =
+      (activeProject && (activeProject as Project).markedPoints) || [];
+    return new Set(pts.map(pointToString));
+  }, [activeProject]);
+
   useEffect(() => {
     if (closestPoint && roverLocation) {
-      let distance = RTNMsitu.distanceBtnCoords(closestPoint, roverLocation);
-      //@ts-ignore assuming it will always bring a value
-      if (distance <= 0.1) {
+      const distance = metersBetween(closestPoint, roverLocation);
+      // Only mark once: without the markedSet guard, standing within 0.1m of a
+      // peg re-dispatches every rover tick (~12/s), each rebuilding activeProject
+      // and re-rendering all pegs for no reason.
+      if (distance <= 0.1 && !markedSet.has(pointToString(closestPoint))) {
         dispatch(saveProjectMarkedPoints([closestPoint]));
       }
     }
-  }, [closestPoint, dispatch, roverLocation]);
+  }, [closestPoint, dispatch, roverLocation, markedSet]);
 
-  const useCheckPointExists = () => {
-    return useCallback((pointToCheck: LatLng) => {
-      if (activeProject && activeProject.markedPoints.length > 0) {
-        const pointsSet = new Set(
-          activeProject.markedPoints.map(pointToString),
-        ); // use a set, it's faster
-        return pointsSet.has(pointToString(pointToCheck));
-      } else {
-        return false;
-      }
-    }, []);
-  };
+  // Memoised planting overlay (lines + pegs). Moving the rover updates
+  // closestPoint every tick; keeping the pegs in a memo means those hundreds
+  // of native circles are NOT re-rendered on every move — only the separate
+  // highlight circle follows the rover, so planting feels as smooth as normal
+  // mode. Recomputes only when the lines, spacing, or marked set change.
+  const plantingPegs = useMemo(
+    () =>
+      cyrusLines.map((line: LatLng[], idx: number) => (
+        <React.Fragment key={idx}>
+          <Polyline
+            coordinates={line}
+            strokeColor="#00fa2a65"
+            strokeWidth={3.5}
+          />
+          {line.map((coord, index) => {
+            if (index % settings.skipLines !== 0) {
+              return null;
+            }
+            const isMarked = markedSet.has(pointToString(coord));
+            return (
+              <Circle
+                key={`${idx}-${index}`}
+                center={coord}
+                radius={0.3}
+                fillColor={isMarked ? '#00C853' : '#FF3B30'}
+                strokeColor={isMarked ? '#00C853' : '#FFFFFF'}
+                strokeWidth={1.5}
+                zIndex={2}
+              />
+            );
+          })}
+        </React.Fragment>
+      )),
+    [cyrusLines, settings.skipLines, markedSet],
+  );
 
-  const checkPointExists = useCheckPointExists();
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const rotateMap = (degrees: number) => {
+  // Apply an explicit rotation only when `rotationDegrees` actually changes
+  // (i.e. the user taps the rotate control) — NOT on every render/roverLocation
+  // update. Otherwise the map continuously re-applies this heading and fights
+  // the user's own pinch-rotate / tilt gestures, snapping back to it.
+  useEffect(() => {
     if (mapRef.current && roverLocation) {
       mapRef.current.animateCamera(
         {
-          heading: degrees,
+          heading: rotationDegrees % 360,
           pitch: 0,
           zoom: 21,
           center: roverLocation,
@@ -337,11 +407,8 @@ const MsituMapView: React.FC<MapProps> = ({
         {duration: 1000},
       );
     }
-  };
-
-  useEffect(() => {
-    rotateMap(rotationDegrees % 360);
-  }, [rotateMap, rotationDegrees]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rotationDegrees]);
 
   useEffect(() => {
     setMapType(settings.mapStyle);
@@ -363,13 +430,6 @@ const MsituMapView: React.FC<MapProps> = ({
       zoomEnabled={zoomEnabled}
       rotateEnabled={rotateEnabled}
       pitchEnabled={pitchEnabled}
-      camera={{
-        center: initialRegion,
-        zoom: 21,
-        heading: 0,
-        pitch: 0,
-        altitude: 0,
-      }}
       style={{flex: 1}}>
       <MemoizedRoverPosition
         // @ts-ignore
@@ -378,43 +438,22 @@ const MsituMapView: React.FC<MapProps> = ({
       />
 
       {planting ? (
-        // Planting mode content
-        cyrusLines.map((line: LatLng[], idx: number) => (
-          <React.Fragment key={idx}>
-            {closestPoint && (
-              <Circle
-                center={closestPoint}
-                radius={0.3}
-                fillColor={'#ff0000'}
-                strokeColor={'#000000'}
-                strokeWidth={1}
-                zIndex={3}
-              />
-            )}
-            <Polyline
-              coordinates={line}
-              strokeColor="#00fa2a65"
-              strokeWidth={3.5}
+        // Planting mode: pegs are memoised (plantingPegs) so they don't
+        // re-render as the rover moves; only the highlight below follows it,
+        // keeping movement as smooth as normal mode.
+        <>
+          {plantingPegs}
+          {closestPoint && (
+            <Circle
+              center={closestPoint}
+              radius={0.45}
+              fillColor={'#FFEA00'}
+              strokeColor={'#000000'}
+              strokeWidth={2.5}
+              zIndex={4}
             />
-            {line.map((coord, index) => {
-              console.log(coord);
-              const isMarked = checkPointExists(coord);
-              if (index % settings.skipLines === 0) {
-                return (
-                  <Circle
-                    key={`${idx}-${index}`}
-                    center={coord}
-                    radius={0.3}
-                    fillColor={isMarked ? 'green' : '#ff00008a'}
-                    strokeColor={isMarked ? 'green' : 'black'}
-                    strokeWidth={2}
-                    zIndex={2}
-                  />
-                );
-              }
-            })}
-          </React.Fragment>
-        ))
+          )}
+        </>
       ) : (
         // Normal mode content
         <>

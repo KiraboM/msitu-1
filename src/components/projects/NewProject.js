@@ -108,8 +108,8 @@ export default function NewProject({ visible, onClose, roverLocation }) {
     const [openLineDirection, setOpenLineDirection] = useState(false)
     const [lineDirectionItems, setLineDirectionItems] = useState([
         { label: 'Line Draw Direction', value: '' },
-        { label: 'Left', value: 'left' },
-        { label: 'Right', value: 'right' },
+        { label: 'Left', value: 'RIGHT' },
+        { label: 'Right', value: 'LEFT' },
     ])
 
     const dispatch = useDispatch()
