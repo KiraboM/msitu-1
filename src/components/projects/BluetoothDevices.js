@@ -189,8 +189,8 @@ export default function BluetoothDevices({ children, visible, onClose }) {
         };
 
         const iconColor = isConnected 
-            ? (highContrastMode ? '#000000' : '#ffffff')
-            : (highContrastMode ? '#000000' : '#3b82f6');
+            ? (highContrastMode ? '#42e910' : '#42e910')
+            : (highContrastMode ? '#1c00ef' : '#3b82f6');
 
         const chevronColor = isConnected
             ? (highContrastMode ? '#ffffff' : '#ffffff')
@@ -204,7 +204,7 @@ export default function BluetoothDevices({ children, visible, onClose }) {
                     className="flex flex-row items-center p-3 rounded-xl mb-2 mx-2"
                     style={{
                         backgroundColor: isConnected 
-                            ? (highContrastMode ? '#19a74d97' : '#16a34a') 
+                            ? (highContrastMode ? '#13d12c' : '#10ff2f') 
                             : (highContrastMode ? '#2c303d' : '#ffffff'),
                         borderWidth: isConnected ? 2 : 1,
                         borderColor: isConnected 
