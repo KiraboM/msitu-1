@@ -122,7 +122,7 @@ const ProjectExportModal = ({ visible, onClose }) => {
   if (!visible) return null;
 
   const containerStyle = {
-    backgroundColor: highContrastMode ? '#070424' : 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: highContrastMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(0, 0, 0, 0.5)',
   };
 
   const modalStyle = {

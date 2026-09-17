@@ -447,7 +447,7 @@ const MsituMapView: React.FC<MapProps> = ({
             <Circle
               center={closestPoint}
               radius={0.45}
-             // fillColor={'#FFEA00'}
+              fillColor={'#ff0000'}
               strokeColor={'#FFEA00'}
               strokeWidth={2.5}
               zIndex={4}

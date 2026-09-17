@@ -293,6 +293,7 @@ export default function NewProject({ visible, onClose, roverLocation }) {
                                         setItems={setGapSizeUnitItems}
                                         onOpen={() => { setOpenLineLengthUnit(false); setOpenLineDirection(false) }}
                                         listMode="SCROLLVIEW"
+                                        showArrowIcon={true}
                                         arrowIconStyle={{
                                             tintColor: highContrastMode ? '#ffffff' : '#000000'
                                         }}
