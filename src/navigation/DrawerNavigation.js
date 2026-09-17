@@ -133,10 +133,10 @@ const AnimatedDrawerItem = ({ label, icon, onPress, delay = 0, description = nul
         </View>
         {badge && (
           <View>
-            <Text className="font-avenirBold text-xs" style={{ color: highContrastMode ? '#000000' : '#3c3434' }}>{badge}</Text>
+            <Text className="font-avenirBold text-xs" style={{ color: highContrastMode ? '#ffffff' : '#3c3434' }}>{badge}</Text>
           </View>
         )}
-        <Ionicon name="chevron-forward" size={16} color={disabled ? (highContrastMode ? "#666666" : "#d1d5db") : (highContrastMode ? "#000000" : "#9ca3af")} />
+        <Ionicon name="chevron-forward" size={16} color={disabled ? (highContrastMode ? "#ffffff" : "#d1d5db") : (highContrastMode ? "#ffffff" : "#9ca3af")} />
       </TouchableOpacity>
     </Reanimated.View>
   );

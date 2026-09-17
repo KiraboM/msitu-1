@@ -18,6 +18,7 @@ import {saveProjectMarkedPoints} from '../../store/projects';
 import {useDispatch, useSelector} from 'react-redux';
 import {pointToString} from '../../utils';
 import {Project} from '../../models';
+import { Text, View } from 'react-native';
 
 interface MapProps {
   initialRegion: Region;
@@ -85,6 +86,7 @@ const MsituMapView: React.FC<MapProps> = ({
   const [combinedPoints, setCombinedPoints] = useState<LatLng[]>([]);
   const [closestPoint, setClosestPoint] = useState<LatLng | null>(null);
   const [mapType, setMapType] = useState<MapType>(MAP_TYPES.HYBRID);
+  const [settingPoint, setSettingPoint] = useState(false)
 
   const dispatch = useDispatch();
   // everything store
@@ -344,13 +346,20 @@ const MsituMapView: React.FC<MapProps> = ({
   }, [activeProject]);
 
   useEffect(() => {
+
+  })
+
+  useEffect(() => {
     if (closestPoint && roverLocation) {
       const distance = metersBetween(closestPoint, roverLocation);
       // Only mark once: without the markedSet guard, standing within 0.1m of a
       // peg re-dispatches every rover tick (~12/s), each rebuilding activeProject
       // and re-rendering all pegs for no reason.
       if (distance <= 0.1 && !markedSet.has(pointToString(closestPoint))) {
+        setSettingPoint(true);
         dispatch(saveProjectMarkedPoints([closestPoint]));
+      } else if (distance >= 0.5){
+        setSettingPoint(false);
       }
     }
   }, [closestPoint, dispatch, roverLocation, markedSet]);
@@ -417,6 +426,7 @@ const MsituMapView: React.FC<MapProps> = ({
   // @ts-ignore
   // @ts-ignore
   return (
+  <View style={{flex: 1}}>
     <MapView
       ref={mapRef}
       provider={PROVIDER_GOOGLE}
@@ -524,6 +534,21 @@ const MsituMapView: React.FC<MapProps> = ({
         </>
       )}
     </MapView>
+    {settingPoint && (
+      <View>
+        <Text
+          style={{
+            color: '#09b220',
+            width: 400,
+            height: 200,
+            fontWeight: 'bold'
+          }}
+        >
+          Marked Point!
+        </Text>
+      </View>
+    )}
+  </View>
   );
 };
 
